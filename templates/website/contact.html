@@ -1,0 +1,89 @@
+{% extends 'website/base.html' %}
+{% load static %}
+{% block content %}
+<!doctype html>
+<html lang="en">
+
+<!-- Mirrored from www.malikhassan.com/html/evernest/contact.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 09 Nov 2024 13:32:30 GMT -->
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="{% static 'website/css/bootstrap.min.css' %}">
+<link href="{% static 'website/css/all.css' %}" rel="stylesheet">
+<!-- Owl Carousel CSS -->
+<link href="{% static 'website/css/owl.carousel.css' %}" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Poppins:100,200,300,400,500,600,700,800,900&amp;display=swap" rel="stylesheet">
+<link href="{% static 'website/css/animate.css' %}" rel="stylesheet">
+<link href="{% static 'website/css/style.css' %}" rel="stylesheet">
+<title>Real Estate</title>
+</head>
+<body>
+
+
+<!--Inner Heading Start-->
+<div class="innerHeading">
+  <div class="container">
+    <h1>Contact Us</h1>
+  </div>
+</div>
+<!--Inner Heading End--> 
+
+<!--Inner Content Start-->
+<div class="innercontent wow fadeInUp">
+  <div class="container">
+    <div class="getTouch">Get In Touch</div>
+    <div class="row formcol">
+      <div class="col-lg-8">
+        <form class="form mb-md50" id="contact-form" method="post" action="http://www.malikhassan.com/html/evernest/contact.php" novalidate="">
+          <div class="messages"></div>
+          <div class="controls">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="form-group has-error has-danger">
+                  <input id="form_name" class="form-control" type="text" name="name" placeholder="Name" required="">
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <input id="form_email" class="form-control" type="email" name="email" placeholder="Email" required="">
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <input id="form_phone" class="form-control" type="text" name="phone" placeholder="Phone" required="">
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <input id="form_subject" class="form-control" type="text" name="subject" placeholder="Subject">
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="form-group">
+                  <textarea id="form_message" class="form-control" name="message" placeholder="Message" rows="4" required=""></textarea>
+                </div>
+              </div>
+              <div class="col-lg-12 contact-wrap">
+                <div class="contact-btn">
+                  <button type="submit" class="sub">Submit Now <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="col-lg-4">
+        <div class="map">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3021674.414950062!2d41.11423519392498!3d42.30298232333148!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40440cd7e64f626b%3A0x4f907964122d4ac2!2sGeorgia!5e0!3m2!1sen!2s!4v1545313690667" width="100%" height="330" frameborder="0" style="border:0" allowfullscreen=""></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Inner Content End--> 
+</body>
+</html>
+{% endblock content %}
