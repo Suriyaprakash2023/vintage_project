@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from . models import *
-
+from dashboard.models import *
 def home(request):
     return render(request,'website/index_slider.html')
 
@@ -85,8 +85,21 @@ def testimonials(request):
 def typography(request):
     return render(request,'website/typography.html')
 
-def plots(request):
-    return render(request,'website/plots.html')
+def plots_properties(request):
+    plots = Plot.objects.filter(property_type="New")
+    return render(request,'website/plots.html',{"plots":plots})
+
+def commercial_properties(request):
+    commercials = Commercial.objects.filter(property_type="New")
+    return render(request,'website/commercial_properties.html',{"commercials":commercials})
+
+def appartments_properties(request):
+    appartments = Appartment.objects.filter(appartment_type="Appartment",property_type="New").order_by('-created_at')
+    return render(request,'website/appartments_properties.html',{"appartments":appartments})
+
+def villas_properties(request):
+    villas = Appartment.objects.filter(appartment_type="Villa",property_type="New").order_by('-created_at')
+    return render(request,'website/villas_properties.html',{"villas":villas})
 
 def apartments(request):
     return render(request,'website/apartments.html')
@@ -97,10 +110,17 @@ def comercial_property(request):
     return render(request,'website/comercial_property.html')
 
 def resale_plots(request):
-    return render(request,'website/resale_plots.html')
+    resale_plots = Plot.objects.filter(property_type="ReSale")
+    return render(request,'website/resale_plots.html',{"resale_plots":resale_plots})
+
+def resale_comercial(request):
+    resale_comercials = Commercial.objects.filter(property_type="ReSale")
+    return render(request,'website/resale_plots.html',{"resale_comercials":resale_comercials})
 
 def resale_apartments(request):
-    return render(request,'website/resale_apartments.html')
+    resale_apartments = Appartment.objects.filter(appartment_type="Appartment",property_type="ReSale").order_by('-created_at')
+    return render(request,'website/resale_apartments.html',{"resale_apartments":resale_apartments})
 
 def resale_individual_villa(request):
-    return render(request,'website/resale_individual_villa.html')
+    resale_villas = Appartment.objects.filter(appartment_type="Villa",property_type="ReSale").order_by('-created_at')
+    return render(request,'website/resale_villas.html',{"resale_villas":resale_villas})

@@ -105,66 +105,135 @@ def create_groups(sender, **kwargs):
             print("auth_group table does not exist, skipping group creation.")
  
 
+PROPERTY_TYPES = [
+    ('New', 'New'),
+    ('ReSale', 'ReSale'),   
+]
+PROPERTY_CATEGORY = [
+    ('Appartment', 'Appartment'),
+    ('Villa', 'Villa'),   
+]
+LISTED_BY = [
+    ('Builder', 'Builder'),
+    ('Dealer', 'Dealer'),    
+]
+FURNISH_TYPE = [
+    ('Furnished', 'Furnished'),
+    ('Semi-Furnished', 'Semi-Furnished'),    
+    ('UnFurnished', 'UnFurnished'),    
+]
+ 
+COMMERCIAL_TYPES = [
+    ('Office', 'Office'),
+    ('Shop', 'Shop'),
+]
 
+FACING_SIDE = [
+    ('East', 'East'),
+    ('West', 'West'),
+    ('North', 'North'),
+    ('South', 'South'),
+
+]
+
+
+# Define a generic Image model
+class PlotImage(models.Model):
+    image = models.ImageField(upload_to='plot_images/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.image.name
+    
+class AppartmentImage(models.Model):
+    image = models.ImageField(upload_to='appartment_images/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.image.name
+    
+class CommercialImage(models.Model):
+    image = models.ImageField(upload_to='commercial_images/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.image.name
+
+# Plot model
 class Plot(models.Model):
-    PLOT_TYPES = [
-        ('New', 'New'),
-        ('ReSale', 'ReSale'),   
-    ]
-    LISTED_BY = [
-        ('Builder', 'Builder'),
-        ('Dealer', 'Dealer'),    
-    ]
-
-    id = models.AutoField(primary_key=True,editable=False)
-    project_name = models.CharField(max_length=200,null=True,blank=True)
-    title = models.CharField(max_length=200,null=True,blank=True)
-    description = models.CharField(max_length=700,null=True,blank=True)
-    sqft = models.CharField(max_length=10,null=True,blank=True)
-    plot_area = models.CharField(max_length=100,null=True,blank=True)
-    length = models.CharField(max_length=100,null=True,blank=True)
-    breadth = models.CharField(max_length=100,null=True,blank=True)
-    facing = models.CharField(max_length=100,null=True,blank=True)
-    listed_by = models.CharField(choices=LISTED_BY,default='Builder',max_length=30)
-    plot_type = models.CharField(choices=PLOT_TYPES,max_length=30,null=True,blank=True)
+    id = models.AutoField(primary_key=True, editable=False)
+    project_name = models.CharField(max_length=200, null=True, blank=True)
+    title = models.CharField(max_length=200, null=True, blank=True)
+    description = models.CharField(max_length=700, null=True, blank=True)
+    sqft = models.CharField(max_length=10, null=True, blank=True)
+    area = models.CharField(max_length=100, null=True, blank=True)
+    address = models.CharField(max_length=200, null=True, blank=True)
+    nearby_school = models.CharField(max_length=100, null=True, blank=True)
+    nearby_busortrain = models.CharField(max_length=100, null=True, blank=True)
+    length = models.CharField(max_length=100, null=True, blank=True)
+    breadth = models.CharField(max_length=100, null=True, blank=True)
+    facing = models.CharField(choices=FACING_SIDE, max_length=30, null=True, blank=True)
+    listed_by = models.CharField(choices=LISTED_BY, default='Builder', max_length=30)
+    property_type = models.CharField(choices=PROPERTY_TYPES, max_length=30, null=True, blank=True)
+    images = models.ManyToManyField(PlotImage, related_name="plot_images", blank=True)
     avaliable = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.title
+    
+# Appartment model
 class Appartment(models.Model):
-    APPARTMENT_TYPES = [
-        ('New', 'New'),
-        ('ReSale', 'ReSale'),   
-    ]
-    PROPERTY_TYPES = [
-        ('Appartment', 'Appartment'),
-        ('Villa', 'Villa'),   
-    ]
-    LISTED_BY = [
-        ('Builder', 'Builder'),
-        ('Dealer', 'Dealer'),    
-    ]
-    FURNISH_TYPE = [
-        ('Furnished', 'Furnished'),
-        ('Semi-Furnished', 'Semi-Furnished'),    
-        ('UnFurnished', 'UnFurnished'),    
-    ]
-
-    id = models.AutoField(primary_key=True,editable=False)
-    project_name = models.CharField(max_length=200,null=True,blank=True)
-    title = models.CharField(max_length=200,null=True,blank=True)
-    description = models.CharField(max_length=700,null=True,blank=True)
-    bhk = models.CharField(max_length=10,null=True,blank=True)
-    bathrooms = models.CharField(max_length=10,null=True,blank=True)
-    parking = models.CharField(max_length=10,null=True,blank=True)
-    floor_no = models.CharField(max_length=10,null=True,blank=True)
-    total_floors = models.CharField(max_length=10,null=True,blank=True)
-    maintenance = models.CharField(max_length=10,null=True,blank=True)
-    furnishing = models.CharField(choices=FURNISH_TYPE,null=True,blank=True)
-    super_area_sqft = models.CharField(max_length=10,null=True,blank=True)
-    carpet_area_sqft = models.CharField(max_length=10,null=True,blank=True)
-    plot_area = models.CharField(max_length=100,null=True,blank=True)
-    facing = models.CharField(max_length=100,null=True,blank=True)
-    listed_by = models.CharField(choices=LISTED_BY,default='Builder',max_length=30)
-    appartment_type = models.CharField(choices=APPARTMENT_TYPES,max_length=30,null=True,blank=True)
+    id = models.AutoField(primary_key=True, editable=False)
+    project_name = models.CharField(max_length=200, null=True, blank=True)
+    title = models.CharField(max_length=200, null=True, blank=True)
+    description = models.CharField(max_length=700, null=True, blank=True)
+    bhk = models.CharField(max_length=10, null=True, blank=True)
+    bathrooms = models.CharField(max_length=10, null=True, blank=True)
+    parking = models.CharField(max_length=10, null=True, blank=True)
+    floor_no = models.CharField(max_length=10, null=True, blank=True)
+    total_floors = models.CharField(max_length=10, null=True, blank=True)
+    maintenance = models.CharField(max_length=10, null=True, blank=True)
+    furnishing = models.CharField(max_length=20, choices=FURNISH_TYPE, null=True, blank=True)
+    land_area_sqft = models.CharField(max_length=10, null=True, blank=True)
+    carpet_area_sqft = models.CharField(max_length=10, null=True, blank=True)
+    area = models.CharField(max_length=100, null=True, blank=True)
+    address = models.CharField(max_length=200, null=True, blank=True)
+    nearby_school = models.CharField(max_length=100, null=True, blank=True)
+    nearby_busortrain = models.CharField(max_length=100, null=True, blank=True)
+    facing = models.CharField(choices=FACING_SIDE, max_length=30, null=True, blank=True)
+    listed_by = models.CharField(choices=LISTED_BY, default='Builder', max_length=30, null=True, blank=True)
+    property_type = models.CharField(choices=PROPERTY_TYPES, max_length=30, null=True, blank=True)
+    appartment_type = models.CharField(choices=PROPERTY_CATEGORY, max_length=30, null=True, blank=True)
+    images = models.ManyToManyField(AppartmentImage, related_name="appartment_images", blank=True)
     avaliable = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.title
+
+# Commercial model
+class Commercial(models.Model):
+    id = models.AutoField(primary_key=True, editable=False)
+    project_name = models.CharField(max_length=200, null=True, blank=True)
+    title = models.CharField(max_length=200, null=True, blank=True)
+    description = models.CharField(max_length=700, null=True, blank=True)
+    furnishing = models.CharField(max_length=20, choices=FURNISH_TYPE, null=True, blank=True)
+    listed_by = models.CharField(max_length=10, choices=LISTED_BY, null=True, blank=True)
+    super_area_sqft = models.CharField(max_length=10, null=True, blank=True)
+    carpet_area_sqft = models.CharField(max_length=10, null=True, blank=True)
+    maintenance = models.CharField(max_length=10, null=True, blank=True)
+    facing = models.CharField(choices=FACING_SIDE, max_length=30, null=True, blank=True)
+    parking = models.CharField(max_length=10, null=True, blank=True)
+    washrooms = models.CharField(max_length=10, null=True, blank=True)
+    area = models.CharField(max_length=100, null=True, blank=True)
+    address = models.CharField(max_length=200, null=True, blank=True)
+    nearby_school = models.CharField(max_length=100, null=True, blank=True)
+    nearby_busortrain = models.CharField(max_length=100, null=True, blank=True)
+    images = models.ManyToManyField(CommercialImage, related_name="commercial_images", blank=True)
+    avaliable = models.BooleanField(default=True)
+    property_type = models.CharField(choices=PROPERTY_TYPES, max_length=30, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title

@@ -33,6 +33,9 @@
     <!-- custom Css-->
     <link href="{% static 'dashboard/assets/css/custom.min.css' %}" rel="stylesheet" type="text/css">
 
+    <!-- dropzone css -->
+    <link rel="stylesheet" href="{% static 'dashboard/assets/libs/dropzone/dropzone.css' %}" type="text/css">
+ 
 </head>
 
 <body>
@@ -89,6 +92,34 @@
       <script src="{% static 'dashboard/assets/apexcharts.com/samples/assets/github-data.js' %}"></script>
       <!-- for irregular timeseries chart -->
       <script src="{% static 'dashboard/assets/apexcharts.com/samples/assets/irregular-data-series.js' %}"></script>
+
+       <!-- ckeditor -->
+    <script src="{% static 'dashboard/assets/libs/ckeditor.js' %}"></script>
+
+     <!-- init js -->
+     <script src="{% static 'dashboard/assets/js/pages/form-editor.init.js' %}"></script>
+
+         <!-- dropzone min -->
+    <script src="{% static 'dashboard/assets/libs/dropzone/dropzone-min.js' %}"></script>
+
+    <script src="{% static 'dashboard/assets/js/pages/form-file-upload.init.js' %}"></script>
+
+      <!-- prismjs plugin -->
+      <script src="{% static 'dashboard/assets/libs/prismjs/prism.js' %}"></script>
+
+      <script>
+        function copyFiles() {
+            console.log("file on")
+            const sourceInput = document.getElementById('images');
+            const targetInput = document.getElementById('propertyimages');
+    
+            // Clone the files into the hidden input field
+            targetInput.files = sourceInput.files;
+            console.log('Files copied to the hidden input:', targetInput.files);
+        }
+    </script>
+    
+      
 </body>
 
 

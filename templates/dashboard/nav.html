@@ -44,19 +44,19 @@
                         <a class="nav-link menu-link collapsed" href="#sidebarEcommerce" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarEcommerce">
                             <i class='bx bx-upload' ></i> <span data-key="t-ecommerce">Add Property</span>
                         </a>
-                        
+            
                         <li class="nav-item">
                             
                             <div class="collapse menu-dropdown" id="sidebarEcommerce">
                                 <ul class="nav nav-sm flex-column">
                                     <li class="nav-item">
-                                       <a href="{% url 'add_property' %}" class="nav-link" data-key="t-dashboard"> Appartment </a>
+                                       <a href="{% url 'add_appartment' %}" class="nav-link" data-key="t-dashboard"> Appartment | Villa </a>
                                     </li>
                                     <li class="nav-item">
-                                       <a href="{% url 'add_property' %}" class="nav-link" data-key="t-dashboard"> Plot </a>
+                                       <a href="{% url 'add_plot' %}" class="nav-link" data-key="t-dashboard"> Plot </a>
                                     </li>
                                     <li class="nav-item">
-                                       <a href="{% url 'add_property' %}" class="nav-link" data-key="t-dashboard"> Villa </a>
+                                       <a href="{% url 'add_commercial' %}" class="nav-link" data-key="t-dashboard"> Commercial </a>
                                     </li>
                                     
                                    
@@ -64,16 +64,32 @@
                             </div>
                         </li>
                         
-                        
-                        <a href="{% url 'properties' %}" class="nav-link menu-link  collapsed" role="button" aria-expanded="false" aria-controls="sidebarHospital">
-                            <i class='bx bxs-layer' ></i> <span data-key="t-hospital">Properties</span>
+                        <a href="#sidebarHospital" class="nav-link menu-link  collapsed" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarHospital">
+                            <i class="bx bx-buildings"></i> <span data-key="t-hospital">Properties</span>
                         </a>
+
+                        <div class="collapse menu-dropdown" id="sidebarHospital">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="{% url 'appartments' %}" class="nav-link" data-key="t-dashboard">Appartment</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'villas' %}" class="nav-link" data-key="t-dashboard">Villa</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'plots' %}" class="nav-link" data-key="t-dashboard">Plot</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'commercials' %}" class="nav-link" data-key="t-dashboard">Commercial</a>
+                                </li>
+                                
+                            </ul>
+                        </div>
+                        
                         <a href="{% url 'table' %}" class="nav-link menu-link  collapsed" role="button" aria-expanded="false" aria-controls="sidebarHospital">
                             <i class=" bx bx-buildings"></i> <span data-key="t-hospital">Table</span>
                         </a>
-                        <a href="{% url 'plot_dashboard' %}" class="nav-link menu-link  collapsed"  role="button" aria-expanded="false" aria-controls="sidebarHospital">
-                            <i class=" bx bx-buildings"></i> <span data-key="t-hospital">Plot Dashboard</span>
-                        </a>
+                        
                        <div class="collapse menu-dropdown" id="sidebarHospital">
                             <ul class="nav nav-sm flex-column">
                                 <li class="nav-item">

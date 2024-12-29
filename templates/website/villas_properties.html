@@ -5,7 +5,7 @@
 <!--Inner Heading Start-->
 <div class="innerHeading">
   <div class="container">
-    <h1>ReSale Plots</h1>
+    <h1>Villa</h1>
   </div>
 </div>
 <!--Inner Heading End--> 
@@ -14,13 +14,26 @@
 <div class="innercontent">
   <div class="container">
     <ul class="row blog_post">
-      {% for plot in plots %}
+      {% for villa in villas %}
         <li class="col-lg-4 col-md-6">
           <div class="property_box wow fadeInUp">
-            <div class="propertyImg"><img alt="" src="{% static 'website/images/blog01.jpg' %}"></div>
-            <h3><a href="#">{{plot.title}}</a></h3>
-            <div class="post-meta"> <span>{{ plot.created_at}}</span>  </div>
-            <p>{{plot.description}}</p>
+
+            <div class="propertyImg">
+              {% if villa.images %}
+              {% with villa.images.all|first as first_image %}
+              {% if first_image %}
+                  <img style="height: 300px;" class="propertyImg" src="{{ first_image.image.url }}" alt="Card image cap">
+              {% else %}
+                  <img class="propertyImg" src="{% static 'website/images/propertyImg03.jpg' %}" alt="Default image cap">
+              {% endif %}
+            {% endwith %}
+
+                {% endif %}
+
+            </div>
+            <h3><a href="#">{{villa.title}}</a></h3>
+            <div class="post-meta"> <span>{{ villa.created_at}}</span>  </div>
+            <p>{{villa.description}}</p>
           </div>
         </li>
       {% endfor %}

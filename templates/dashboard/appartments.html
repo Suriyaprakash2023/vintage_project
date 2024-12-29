@@ -1,0 +1,90 @@
+{% extends "dashboard/dashboard_base.html" %}
+{% load static %} 
+
+{% block content %}
+
+<div class="main-content">
+
+  <div class="page-content">
+      <div class="container-fluid">
+
+          <!-- start page title -->
+          <div class="row">
+              <div class="col-12">
+                  <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                      <div class="page-title-right">
+                          <ol class="breadcrumb m-0">
+                              <li class="breadcrumb-item"><a >Properties</a></li>
+                              <li class="breadcrumb-item active">Appartments</li>
+                          </ol>
+                          
+                      </div>
+
+                      <div class="page-title-left">
+                        <ol class="breadcrumb m-0">
+                          <div class="btn-group">
+                            <button type="button" class="btn btn-primary">
+                              Property Type
+                            </button>
+                            <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                            <div class="dropdown-menu">
+                              <form action="{% url 'appartments' %}" method="post">
+                                {% csrf_token %}
+                                <input type='hidden' name="property_type" value="New" />
+                                <button type='submit' class="dropdown-item" >New Sale Properties</button>
+                              </form>
+                                <div class="dropdown-divider"></div>
+                                <form action="{% url 'appartments' %}" method="post">
+                                  {% csrf_token %}
+                                  <input type='hidden' name="property_type" value="ReSale" />
+                                  <button type='submit' class="dropdown-item" >ReSale Properties</button>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- /btn-group -->
+                        </ol>
+                        
+                    </div>
+
+                  </div>
+              </div>
+          </div>
+          <!-- end page title -->
+
+          <div class="row">
+            {% for appartment in appartments %}
+              <div class="col-sm-6 col-xl-3">
+                  <!-- Simple card -->
+                  <div class="card">
+                    {% if appartment.images %}
+                    {% with appartment.images.all|first as first_image %}
+                    {% if first_image %}
+                        <img style="height: 300px;" class="card-img-top img-fluid" src="{{ first_image.image.url }}" alt="Card image cap">
+                    {% else %}
+                        <img class="card-img-top img-fluid" src="{% static 'website/images/propertyImg03.jpg' %}" alt="Default image cap">
+                    {% endif %}
+                {% endwith %}
+
+                      {% endif %}
+                      <div class="card-body">
+                          <h4 class="card-title mb-2">{{appartment.title}}</h4>
+                          <p class="card-text">{{appartment.description}}</p>
+                          <div class="text-end">
+                              <a href="" class="btn btn-primary">View</a>
+                          </div>
+                      </div>
+                  </div><!-- end card -->
+              </div><!-- end col -->
+            {% endfor %}
+          </div><!-- end row -->
+
+
+      </div>
+      <!-- container-fluid -->
+  </div>
+  <!-- End Page-content -->
+
+
+
+
+{% endblock content %}

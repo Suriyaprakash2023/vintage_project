@@ -12,20 +12,15 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <button class="close-toggler" type="button" data-toggle="offcanvas"> <span><i class="fas fa-times-circle" aria-hidden="true"></i></span> </button>
               <ul class="navbar-nav mr-auto">
-                <li class="nav-item active"><a class="nav-link" href="index.html"> Home <span class="caret"><i class="fas fa-caret-down"></i></span></a> <i class="fas fa-caret-down"></i>
-                  <ul class="submenu">
-                    <li><a href="{% url 'index' %}">Home Image</a></li>
-                    <li><a href="{% url 'index_slider' %}">Home Slider</a></li>
-                    <li><a href="{% url 'index_video' %}">Home Video</a></li>
-                    <li><a href="{% url 'index_map' %}">Home Map</a></li>
-                  </ul>
+                <li class="nav-item active"><a class="nav-link" href="{% url 'home' %}"> Home <span class="caret"><i class="fas fa-caret-down"></i></span></a> <i class="fas fa-caret-down"></i>
+                 
                 </li>
-                <li class="nav-item"><a class="nav-link" href="#">Properties <span class="caret"><i class="fas fa-caret-down"></i></span></a> <i class="fas fa-caret-down"></i>
+                <li class="nav-item"><a class="nav-link">Properties <span class="caret"><i class="fas fa-caret-down"></i></span></a> <i class="fas fa-caret-down"></i>
                   <ul class="submenu">
-                    <li><a href="{% url 'plots' %}">Plots</a></li>
-                    <li><a href="{% url  'apartments' %}">Appartments</a></li>
-                    <li><a href="{% url 'individual_villa' %}">Individual Villa</a></li>
-                    <li><a href="{% url 'comercial_property' %}">Commercial Property</a></li>
+                    <li><a href="{% url 'plots_properties' %}">Plots</a></li>
+                    <li><a href="{% url  'appartments_properties' %}">Appartments</a></li>
+                    <li><a href="{% url 'villas_properties' %}">Individual Villa</a></li>
+                    <li><a href="{% url 'commercial_properties' %}">Commercial Property</a></li>
                   </ul>
                 </li>
                 <li class="nav-item"><a class="nav-link" href="#">Resale Properties<span class="caret"><i class="fas fa-caret-down"></i></span></a> <i class="fas fa-caret-down"></i>
@@ -42,45 +37,9 @@
                     <li><a href="{% url 'property_map' %}">Booking Procedure</a></li>
                   </ul>
                 </li>
-                <li class="nav-item"><a class="nav-link" href="#"> Listing <span class="caret"><i class="fas fa-caret-down"></i></span></a> <i class="fas fa-caret-down"></i>
-                  <ul class="submenu">
-                    <li><a href="{% url 'property_grid' %}">Property Grid</a></li>
-                    <li><a href="{% url  'property_list' %}">Property List</a></li>
-                    <li><a href="{% url 'property_map' %}">Property Map</a></li>
-                    <li><a href="{% url 'property_single' %}">Property Single</a></li>
-                  </ul>
-                </li>
-                <li class="nav-item"><a class="nav-link" href="#."> Features <span class="caret"><i class="fas fa-caret-down"></i></span></a> <i class="fas fa-caret-down"></i>
-                  <ul class="submenu">
-                    <li><a href="{% url 'agents' %}">Agents</a></li>
-                    <li><a href="{% url 'agents_single' %}">Agents Single</a></li>
-                    <li><a href="{% url 'agencies' %}">Agencies</a></li>
-                    <li><a href="{% url 'agencies_single' %}">Agencies Details</a></li>
-                    <li><a href="{% url 'submit_property' %}">Submit Property</a></li>
-                  </ul>
-                </li>
-                <li class="nav-item"><a class="nav-link" href="#."> Pages <span class="caret"><i class="fas fa-caret-down"></i></span></a> <i class="fas fa-caret-down"></i>
-                  <ul class="submenu">
-                  <li><a href="{% url 'about' %}">About Us</a></li>
-                  <li><a href="{% url 'team' %}">Our Team</a></li>
-                  <li><a href="{% url 'login' %}">Login</a></li>
-                  <li><a href="{% url 'register' %}">Register</a></li>
-                  <li><a href="{% url 'faqs' %}">Faqs</a></li>
-                  <li><a href="{% url 'testimonials' %}">Testimonials</a></li>
-                  <li><a href="{% url 'pricing' %}">Pricing Table</a></li>
-                    <li><a href="{% url 'error' %}">Page 404 </a></li>
-                    <li><a href="{% url  'typography' %}">Typography</a></li>
-                  </ul>
-                </li>
-                <li class="nav-item"><a class="nav-link" href="blog.html"> Blog <span class="caret"><i class="fas fa-caret-down"></i></span></a> <i class="fas fa-caret-down"></i>
-                  <ul class="submenu">
-                    <li><a href="{% url 'blog' %}">Blog Grid</a></li>
-                    <li><a href="{% url 'blog_grid' %}">Blog Grid with Sidebar</a></li>
-                    <li><a href="{% url 'blog_list' %}">Blog List</a></li>
-                    <li><a href="{% url 'blog_single' %}">Blog Single</a></li>
-                  </ul>
-                </li>
+               
                 <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}"> Contact Us</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}"> About Us</a></li>
               </ul>
             </div>
           </nav>

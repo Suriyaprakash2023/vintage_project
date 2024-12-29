@@ -1,0 +1,47 @@
+{% extends 'website/base.html' %}
+{% load static %}
+{% block content %}
+
+<!--Inner Heading Start-->
+<div class="innerHeading">
+  <div class="container">
+    <h1>Appartment</h1>
+  </div>
+</div>
+<!--Inner Heading End--> 
+
+<!--Inner Content Start-->
+<div class="innercontent">
+  <div class="container">
+    <ul class="row blog_post">
+      {% for appartment in appartments %}
+        <li class="col-lg-4 col-md-6">
+          <div class="property_box wow fadeInUp">
+
+            <div class="propertyImg">
+              {% if appartment.images %}
+              {% with appartment.images.all|first as first_image %}
+              {% if first_image %}
+                  <img style="height: 300px;" class="propertyImg" src="{{ first_image.image.url }}" alt="Card image cap">
+              {% else %}
+                  <img class="propertyImg" src="{% static 'website/images/propertyImg03.jpg' %}" alt="Default image cap">
+              {% endif %}
+            {% endwith %}
+
+                {% endif %}
+
+            </div>
+            <h3><a href="#">{{appartment.title}}</a></h3>
+            <div class="post-meta"> <span>{{ appartment.created_at}}</span>  </div>
+            <p>{{appartment.description}}</p>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+    <div class="blog-pagination text-center"> <a href="#0"><i class="fas fa-angle-left"></i></a> <a href="#0">01</a> <a href="#0" class="active">02</a> <a href="#0">03</a> <a href="#0"><i class="fas fa-angle-right"></i></a> </div>
+  </div>
+</div>
+<!--Inner Content End--> 
+</body>
+</html>
+{% endblock content %}
