@@ -1,11 +1,35 @@
 from django.shortcuts import render
 from . models import *
 from dashboard.models import *
+from django.shortcuts import render, get_object_or_404
+
 def home(request):
-    return render(request,'website/index_slider.html')
+    appartments = Appartment.objects.filter(appartment_type="Appartment", property_type="New").order_by('-created_at')[:3]
+    plots = Plot.objects.filter(property_type="New")[:3]
+    recent_villas = Appartment.objects.filter(
+        appartment_type="Villa", 
+        property_type="New"
+    ).order_by('-created_at')[:5]  # Removed villa_id exclusion
+    resale_apartments = Appartment.objects.filter(
+        appartment_type="Appartment",
+        property_type="ReSale"
+    ).order_by('-created_at')[:3]
+
+    return render(request, 'website/index_slider.html', {
+        "appartments": appartments,
+        "plots": plots,
+        "resale_apartments": resale_apartments,
+        "recent_villas": recent_villas
+    })
+
+
 
 def about(request):
-    return render(request,'website/about.html')
+    recent_villas = Appartment.objects.filter(
+        appartment_type="Villa", 
+        property_type="New"
+    ).order_by('-created_at')[:5] 
+    return render(request,'website/about.html',{"recent_villas":recent_villas})
 
 def error(request):
     return render(request,'website/404.html')
@@ -33,9 +57,6 @@ def blog_single(request):
 
 def blog(request):
     return render(request,'website/blog.html')
-
-def contact(request):
-    return render(request,'website/contact.html')
 
 def faqs(request):
     return render(request,'website/faqs.html')
@@ -68,6 +89,7 @@ def property_map(request):
     return render(request,'website/property_map.html')
 
 def property_single(request):
+
     return render(request,'website/property_single.html')
 
 def register(request):
@@ -85,42 +107,245 @@ def testimonials(request):
 def typography(request):
     return render(request,'website/typography.html')
 
-def plots_properties(request):
-    plots = Plot.objects.filter(property_type="New")
-    return render(request,'website/plots.html',{"plots":plots})
-
-def commercial_properties(request):
-    commercials = Commercial.objects.filter(property_type="New")
-    return render(request,'website/commercial_properties.html',{"commercials":commercials})
-
-def appartments_properties(request):
-    appartments = Appartment.objects.filter(appartment_type="Appartment",property_type="New").order_by('-created_at')
-    return render(request,'website/appartments_properties.html',{"appartments":appartments})
-
-def villas_properties(request):
-    villas = Appartment.objects.filter(appartment_type="Villa",property_type="New").order_by('-created_at')
-    return render(request,'website/villas_properties.html',{"villas":villas})
-
 def apartments(request):
     return render(request,'website/apartments.html')
 
 def individual_villa(request):
     return render(request,'website/individual_villa.html')
+
 def comercial_property(request):
     return render(request,'website/comercial_property.html')
 
+def plots_properties(request):
+    plots = Plot.objects.filter(property_type="New")
+    recent_villas = Appartment.objects.filter(
+        appartment_type="Villa", 
+        property_type="New"
+    ).order_by('-created_at')[:5] 
+    return render(request,'website/plots.html',{"plots":plots,"recent_villas":recent_villas})
+
+def appartments_properties(request):
+    recent_villas = Appartment.objects.filter(
+        appartment_type="Villa", 
+        property_type="New"
+    ).order_by('-created_at')[:5] 
+    appartments = Appartment.objects.filter(appartment_type="Appartment",property_type="New").order_by('-created_at')
+    return render(request,'website/appartments_properties.html',{"appartments":appartments,"recent_villas":recent_villas})
+
+def appartment_details(request, appartment_id):
+    appartment = get_object_or_404(
+        Appartment, 
+        pk=appartment_id, 
+        appartment_type="Appartment",  
+        property_type="New"            
+    )
+
+    recent_appartments = Appartment.objects.filter(
+        appartment_type="Appartment",  
+        property_type="New"            
+    ).exclude(id=appartment_id).order_by('-created_at')[:5]
+    
+    recent_villas = Appartment.objects.filter(
+        appartment_type="Villa", 
+        property_type="New"
+    ).order_by('-created_at')[:5] 
+
+    return render(request, 'website/appartment_details.html', {
+        'appartment': appartment,
+        'recent_appartments': recent_appartments,
+        "recent_villas":recent_villas  
+    })
+
+
+def plot_details(request, plot_id):
+    plot = get_object_or_404(Plot, pk=plot_id, property_type='New')
+    recent_plots = Plot.objects.filter(property_type='New').exclude(id=plot_id).order_by('-created_at')[:5]
+    recent_villas = Appartment.objects.filter(
+        appartment_type="Villa", 
+        property_type="New"
+    ).order_by('-created_at')[:5] 
+    plots = [plot]
+    return render(request, 'website/property_single.html', {'plots': plots, 'recent_events': recent_plots,"recent_villas":recent_villas})
+
+def commercial_properties(request):
+    commercials = Commercial.objects.filter(property_type="New")
+    recent_villas = Appartment.objects.filter(
+        appartment_type="Villa", 
+        property_type="New"
+    ).order_by('-created_at')[:5] 
+    print(f"Fetched commercials: {commercials}")  
+    return render(request, 'website/commercial_properties.html', {"commercials": commercials,"recent_villas":recent_villas})
+
+def commercial_details(request, commercial_id):
+    commercial = get_object_or_404(Commercial, pk=commercial_id, property_type='New')
+    recent_commercials = Commercial.objects.filter(property_type='New').exclude(id=commercial_id).order_by('-created_at')[:5]
+    recent_villas = Appartment.objects.filter(
+        appartment_type="Villa", 
+        property_type="New"
+    ).order_by('-created_at')[:5] 
+    return render(request, 'website/commercial_details.html', {
+        'commercial': commercial,
+        'recent_commercials': recent_commercials,
+        "recent_villas":recent_villas
+    })
+
+def villas_properties(request):
+    villas = Appartment.objects.filter(appartment_type="Villa", property_type="New").order_by('-created_at')
+    recent_appartments = Appartment.objects.filter(
+    property_type='New'
+    ).exclude(appartment_type="Villa").order_by('-created_at')[:5]
+    recent_villas = Appartment.objects.filter(
+        appartment_type="Villa", 
+        property_type="New"
+    ).order_by('-created_at')[:5] 
+
+    return render(request, 'website/villas_properties.html', {
+        "villas": villas,
+        "recent_appartments": recent_appartments,
+        "recent_villas":recent_villas
+    })
+
+
+def villa_details(request, villa_id):
+    villa = get_object_or_404(Appartment, pk=villa_id, appartment_type="Villa", property_type="New")
+    recent_villas = Appartment.objects.filter(
+        appartment_type="Villa", 
+        property_type="New"
+    ).exclude(id=villa_id).order_by('-created_at')[:5]
+    return render(request, 'website/villa_details.html', {
+        'villa': villa,
+        'recent_villas': recent_villas  
+    })
+
+
 def resale_plots(request):
     resale_plots = Plot.objects.filter(property_type="ReSale")
-    return render(request,'website/resale_plots.html',{"resale_plots":resale_plots})
+    recent_villas = Appartment.objects.filter(
+        appartment_type="Villa", 
+        property_type="New"
+    ).order_by('-created_at')[:5] 
+    return render(request, 'website/resale_plots.html', {"resale_plots": resale_plots,"recent_villas":recent_villas})
+
+def resale_plot_details(request, plot_id):
+    plot = get_object_or_404(Plot, pk=plot_id, property_type='ReSale')
+    recent_plots = Plot.objects.filter(property_type='ReSale').exclude(id=plot_id).order_by('-created_at')[:5]
+    recent_villas = Appartment.objects.filter(
+        appartment_type="Villa", 
+        property_type="New"
+    ).order_by('-created_at')[:5] 
+    plots = [plot]
+    return render(request, 'website/resale_plot_details.html', {'plots': plots, 'recent_plots': recent_plots,"recent_villas":recent_villas})
 
 def resale_comercial(request):
     resale_comercials = Commercial.objects.filter(property_type="ReSale")
-    return render(request,'website/resale_plots.html',{"resale_comercials":resale_comercials})
+    recent_villas = Appartment.objects.filter(
+        appartment_type="Villa", 
+        property_type="New"
+    ).order_by('-created_at')[:5] 
+    print(resale_comercials)
+    return render(request,'website/resale_commercials.html',{"resale_comercials":resale_comercials,"recent_villas":recent_villas})
+
+def resale_commercial_details(request, commercial_id):
+    commercial = get_object_or_404(Commercial, pk=commercial_id, property_type='ReSale')
+    recent_commercials = Commercial.objects.filter(property_type='ReSale').exclude(id=commercial_id).order_by('-created_at')[:5]
+    recent_villas = Appartment.objects.filter(
+        appartment_type="Villa", 
+        property_type="New"
+    ).order_by('-created_at')[:5] 
+    return render(request, 'website/resale_commercial_details.html', {
+        'commercial': commercial,
+        'recent_commercials': recent_commercials,
+        "recent_villas":recent_villas
+    })
 
 def resale_apartments(request):
-    resale_apartments = Appartment.objects.filter(appartment_type="Appartment",property_type="ReSale").order_by('-created_at')
-    return render(request,'website/resale_apartments.html',{"resale_apartments":resale_apartments})
+    resale_apartments = Appartment.objects.filter(
+        appartment_type="Appartment",
+        property_type="ReSale"
+    ).exclude(id__isnull=True).order_by('-created_at')
+    recent_villas = Appartment.objects.filter(
+        appartment_type="Villa", 
+        property_type="New"
+    ).order_by('-created_at')[:5]   
+    print(resale_apartments) 
+    return render(request, 'website/resale_apartments.html', {"resale_apartments": resale_apartments,"recent_villas":recent_villas})
+
+
+def resale_appartment_details(request, appartment_id):
+    appartment = get_object_or_404(Appartment, pk=appartment_id, property_type='ReSale')
+    resale_recent_appartments = Appartment.objects.filter(
+    appartment_type="Appartment", 
+    property_type="ReSale"        
+    ).exclude(id=appartment_id).order_by('-created_at')[:5]
+    recent_villas = Appartment.objects.filter(
+        appartment_type="Villa", 
+        property_type="New"
+    ).order_by('-created_at')[:5] 
+
+    
+    return render(request, 'website/resale_appartment_details.html', {
+        'appartment': appartment,
+        'resale_recent_appartments': resale_recent_appartments,
+        "recent_villas":recent_villas  
+    })
 
 def resale_individual_villa(request):
     resale_villas = Appartment.objects.filter(appartment_type="Villa",property_type="ReSale").order_by('-created_at')
-    return render(request,'website/resale_villas.html',{"resale_villas":resale_villas})
+    recent_villas = Appartment.objects.filter(
+        appartment_type="Villa", 
+        property_type="New"
+    ).order_by('-created_at')[:5] 
+    return render(request,'website/resale_villas.html',{"resale_villas":resale_villas,"recent_villas":recent_villas})
+
+def resale_villa_details(request, villa_id):
+    villa = get_object_or_404(Appartment, pk=villa_id, appartment_type="Villa", property_type="ReSale")
+    recent_villas = Appartment.objects.filter(
+        appartment_type="Villa", 
+        property_type="ReSale"
+    ).exclude(id=villa_id).order_by('-created_at')[:5]
+   
+    return render(request, 'website/resale_villa_details.html', {
+        'villa': villa,
+        'recent_villas': recent_villas  
+    })
+from django.shortcuts import render, redirect
+
+def contact(request):
+    
+    
+    recent_villas = Appartment.objects.filter(
+        appartment_type="Villa", 
+        property_type="New"
+    ).order_by('-created_at')[:5] 
+    
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+
+        if name and email and phone and message: 
+            contact = Contact(name=name, email=email, phone=phone, subject=subject, message=message)
+            contact.save()
+            return redirect('contact')
+        
+          
+
+    contacts = Contact.objects.all()
+    return render(request, 'website/contact.html', {'contacts': contacts,"recent_villas":recent_villas})
+
+def gallery(request):
+    galleries = Gallery.objects.all() 
+    recent_villas = Appartment.objects.filter(
+        appartment_type="Villa", 
+        property_type="New"
+    ).order_by('-created_at')[:5]  
+    return render(request, 'website/gallery.html', {'galleries': galleries,"recent_villas":recent_villas})
+
+def construction(request):
+    recent_villas = Appartment.objects.filter(
+        appartment_type="Villa", 
+        property_type="New"
+    ).order_by('-created_at')[:5] 
+    return render(request,'website/construction.html',{"recent_villas":recent_villas})

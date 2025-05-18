@@ -11,7 +11,7 @@
 <!--Inner Heading End--> 
 
 <!--Inner Content Start-->
-<div class="innercontent">
+<!-- <div class="innercontent">
   <div class="container">
     <ul class="row blog_post">
       {% for villa in villas %}
@@ -39,7 +39,131 @@
       {% endfor %}
     </ul>
     <div class="blog-pagination text-center"> <a href="#0"><i class="fas fa-angle-left"></i></a> <a href="#0">01</a> <a href="#0" class="active">02</a> <a href="#0">03</a> <a href="#0"><i class="fas fa-angle-right"></i></a> </div>
+  </div> -->
+
+
+  <!--Inner Content Start-->
+<div class="innercontent">
+  <div class="container">
+    <div class="row porperty_listWrp">
+      <div class="col-lg-8">
+        <ul class="blog_post">
+          {% for villa in villas %}
+          <li>
+            <div class="property_box wow fadeInUp">
+              <div class="row">
+                <div class="col-lg-6 col-md-6">
+                  <div class="propertyImg">
+                    {% if villa.images %}
+                    {% with villa.images.all|first as first_image %}
+                    {% if first_image %}
+                        <img style="height: 300px;" class="propertyImg" src="{{ first_image.image.url }}" alt="Card image cap">
+                    {% else %}
+                        <img class="propertyImg" src="{% static 'website/images/propertyImg03.jpg' %}" alt="Default image cap">
+                    {% endif %}
+                    {% endwith %}
+                    {% endif %}
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                  <h3><a href="{% url 'villa_details' villa.id %}">{{ villa.title }}</a></h3>
+                  <div class="post-meta"> <span>{{ villa.created_at}}</span> <span>15 Comments</span> <span>15 Likes</span> </div>
+                  <p>{{villa.description}} </p>
+                  <div class="readmore"><a href="{% url 'villa_details' villa.id %}">Read More</a></div>
+                </div>
+              </div>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+        <div class="blog-pagination text-center"> <a href="#0"><i class="fas fa-angle-left"></i></a> <a href="#0">01</a> <a href="#0" class="active">02</a> <a href="#0">03</a> <a href="#0"><i class="fas fa-angle-right"></i></a> </div>
+      </div>
+
+      <!-- side bar content  start -->
+
+      <div class="col-lg-4">
+        <!-- <div class="single-widgets widget_search fadeInRight wow">
+          <h4>Search</h4>
+          <form action="#" class="sidebar-search-form">
+            <input type="search" name="search" placeholder="Search..">
+            <button type="submit"><i class="fas fa-search"></i></button>
+          </form>
+        </div> -->
+        <div class="single-widgets widget_category fadeInRight wow">
+          <h4>Categories</h4>
+          <ul>
+            <li><a href="#">Apartement <span>09</span></a></li>
+            <li><a href="#">Villa <span>12</span></a></li>
+            <li><a href="#">Family House <span>19</span></a> </li>
+            <li><a href="#">Modern Villa <span>17</span></a></li>
+            <li><a href="#">Town House <span>10</span></a></li>
+            <li><a href="#">Office <span>10</span></a></li>
+          </ul>
+        </div>
+
+        <div class="single-widgets widget_category fadeInUp wow">
+          <h4>Recent Properties</h4>
+          <ul class="property_sec">
+            {% for recent_appartment in recent_appartments %}
+              <li>
+                <div class="rec_proprty">
+                  <div class="propertyImg">
+                    {% if recent_appartment.images.all %}
+                      <img src="{{ recent_appartment.images.all.0.image.url }}" 
+                           alt="{{ recent_appartment.title }}" 
+                           style="width: 100px; height: 120px; object-fit: cover; object-position: center;">
+                    {% else %}
+                      <img src="{% static 'website/images/property_placeholder.jpg' %}" 
+                           alt="Property image placeholder" 
+                           style="width: 45px; height: 55px; object-fit: cover; object-position: center;">
+                    {% endif %}
+                  </div>
+                  <div class="property_info">
+                    <h3>
+                      <a href="{% url 'appartment_details' recent_appartment.id %}">
+                        {{ recent_appartment.project_name }}
+                      </a>
+                    </h3>
+                    <p>{{ recent_appartment.area }}</p>
+                    <div class="priceWrp">₹{{ recent_appartment.total_price }}</div>
+                  </div>
+                </div>
+              </li>
+            {% empty %}
+              <li>No properties available at the moment.</li>
+            {% endfor %}
+          </ul>
+        </div>
+        
+        <div class="single-widgets widget_category fadeInRight wow">
+          <h4>Archives</h4>
+          <ul class="categories">
+            <li><a href="#">May 2020 </a></li>
+            <li><a href="#">February 2019 </a></li>
+            <li><a href="#">August 2018 </a></li>
+          </ul>
+        </div>
+        <div class="single-widgets widget_category fadeInRight wow">
+          <h4>Our Services</h4>
+          <ul class="tags">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Interior</a></li>
+            <li><a href="#">Apartment</a></li>
+            <li><a href="#">Real Estate</a></li>
+            <li><a href="#">Luxury</a></li>
+            <li><a href="#">Rent</a></li>
+            <li><a href="#">Agents</a></li>
+            <li><a href="#">Sell</a></li>
+            <li><a href="#">Family</a></li>
+          </ul>
+        </div>
+      </div>
+
+       <!-- side bar content End -->
+    </div>
   </div>
+</div>
+<!--Inner Content End--> 
 </div>
 <!--Inner Content End--> 
 </body>

@@ -1,0 +1,178 @@
+{% extends 'website/base.html' %}
+{% load static %}
+{% block content %}
+<!doctype html>
+<html lang="en">
+<!-- Mirrored from www.malikhassan.com/html/evernest/property_single.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 09 Nov 2024 13:29:36 GMT -->
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<link href="{% static 'css/all.css' %}" rel="stylesheet">
+<!-- Owl Carousel CSS -->
+<link href="{% static 'css/owl.carousel.css' %}" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Poppins:100,200,300,400,500,600,700,800,900&amp;display=swap" rel="stylesheet">
+<link href="{% static 'css/animate.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/nice-select.css' %}">
+<link rel="stylesheet" href="{% static 'css/flexslider.css' %}">
+<link href="{% static 'css/style.css' %}" rel="stylesheet">
+<title>Real Estate</title>
+</head>
+
+<body>
+ 
+
+<!--Inner Heading Start-->
+<div class="innerHeading">
+  <div class="container">
+    <h1>Property Single</h1>
+  </div>
+</div>
+<!--Inner Heading End--> 
+
+<!--Inner Content Start-->
+<div class="innercontent">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="single-widgets widget_category mt30 fadeInUp wow">
+          <h4>Categories</h4>
+          <ul>
+            <li><a href="#">Apartement <span>09</span></a></li>
+            <li><a href="#">Villa <span>12</span></a></li>
+            <li><a href="#">Family House <span>19</span></a></li>
+            <li><a href="#">Modern Villa <span>17</span></a></li>
+            <li><a href="#">Town House <span>10</span></a></li>
+            <li><a href="#">Office <span>10</span></a></li>
+          </ul>
+        </div>
+        
+        <div class="single-widgets widget_category fadeInUp wow">
+          <h4>Recent Properties</h4>
+          <ul class="property_sec">
+            {% for recent_villas in recent_villas %}
+              <li>
+                <div class="rec_proprty">
+                  <div class="propertyImg">
+                    {% if recent_villas.images.all %}
+                      <img src="{{ recent_villas.images.all.0.image.url }}" 
+                           alt="{{ recent_appartment.title }}" 
+                           style="width: 100px; height: 120px; object-fit: cover; object-position: center;">
+                    {% else %}
+                      <img src="{% static 'website/images/property_placeholder.jpg' %}" 
+                           alt="Property image placeholder" 
+                           style="width: 45px; height: 55px; object-fit: cover; object-position: center;">
+                    {% endif %}
+                  </div>
+                  <div class="property_info">
+                    <h3>
+                      <a href="{% url 'resale_villa_details' recent_villas.id %}">
+                        {{ recent_villas.project_name }}
+                      </a>
+                    </h3>
+                    <p>{{ recent_villas.area }}</p>
+                    <div class="priceWrp">₹{{ recent_villas.total_price }}</div>
+                  </div>
+                </div>
+              </li>
+            {% empty %}
+              <li>No properties available at the moment.</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      
+      <div class="col-lg-8"> 
+        <div id="slider" class="flexslider wow fadeInUp">
+          <ul class="slides">
+            {% if villa.images.all %}
+              {% for image in villa.images.all %}
+                <li><img alt="{{ appartment.title }}" src="{{ image.image.url }}" /></li>
+              {% endfor %}
+            {% else %}
+              <li><img alt="No Image" src="{% static 'website/images/slide1.jpg' %}" /></li>
+              <li><img alt="No Image" src="{% static 'website/images/slide2.jpg' %}" /></li>
+              <!-- Add more placeholder images as needed -->
+            {% endif %}
+          </ul>
+        </div>
+        
+        <div id="carousel" class="flexslider wow fadeInUp">
+          <ul class="slides">
+            {% if villa.images.all %}
+              {% for image in villa.images.all %}
+                <li><img alt="{{ appartment.title }}" src="{{ image.image.url }}" /></li>
+              {% endfor %}
+            {% else %}
+              <li><img alt="No Image" src="{% static 'website/images/slide1.jpg' %}" /></li>
+              <li><img alt="No Image" src="{% static 'website/images/slide2.jpg' %}" /></li>
+              <!-- Add more placeholder images as needed -->
+            {% endif %}
+          </ul>
+        </div>
+        
+        <div class="property_details">
+          <div class="row property_head wow fadeInUp">
+            <div class="col-lg-8 col-md-8">
+              <h3>{{ villa.title }}</h3>
+              <div class="property_address">{{ villa.address }}</div>
+            </div>
+            <div class="col-lg-4 col-md-4">
+              <div class="heart_info">
+                <div class="heart_icon"><a href="#"><i class="fa fa-heart" aria-hidden="true"></i></a></div>
+                <div class="heart_icon exchange_icon"><a href="#"><i class="fas fa-exchange-alt"></i></a></div>
+                <div class="property_price">₹ {{ villa.total_price }}</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="property_widget wow fadeInUp">
+            <h3 class="desc_head">Description</h3>
+            <p>{{ villa.description }}</p>
+          </div>
+          
+          <div class="property_widget wow fadeInUp">
+            <h3 class="desc_head">Property Details</h3>
+            <div class="row prop_del">
+              <div class="col-lg-6">
+                <ul class="property_list">
+                  <li><span>Property ID :</span> {{ villa.id }}</li>
+                  <li><span>Project Name :</span> {{ villa.project_name }}</li>
+                  <li><span>Sqft Price :</span> {{ villa.sqft_price }}</li>
+                  <li><span>Land Area Sqft :</span> {{ villa.land_area_sqft }}</li>
+                  <li><span>Carpet Area Sqft :</span> {{ villa.carpet_area_sqft }}</li>
+                  <li><span>BHK :</span> {{ villa.bhk }}</li>
+                  <li><span>Bathrooms :</span> {{ villa.bathrooms }}</li>
+                  <li><span>Parking :</span> {{ villa.parking }}</li>
+                </ul>
+              </div>
+              <div class="col-lg-6">
+                <ul class="property_list">
+                  <li><span>Furnishing :</span> {{ villa.furnishing }}</li>
+                  <li><span>Facing :</span> {{ villa.facing }}</li>
+                  <!-- <li><span>Floor No :</span> {{ villa.floor_no }}</li>
+                  <li><span>Total Floors :</span> {{ villa.total_floors }}</li> -->
+                  <li><span>Maintenance Fee :</span> {{ villa.maintenance }}</li>
+                  <li><span>School in KM :</span> {{ villa.nearby_school }}</li>
+                  <li><span>Bus stand in KM :</span> {{ villa.nearby_busortrain }}</li>
+                  <li><span>Property Type :</span> {{ villa.property_type }}</li>
+                  <li><span>Property Status :</span> {{ villa.avaliable }}</li>
+                  <li><span>Date Of Post:</span> {{ villa.created_at }}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+
+<!--Inner Content End--> 
+</body>
+</html>
+{% endblock content %}

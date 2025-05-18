@@ -14,12 +14,16 @@
 <div class="innercontent">
   <div class="container">
     <ul class="row blog_post">
-      {% for plot in plots %}
+      {% for plot in resale_plots %}
         <li class="col-lg-4 col-md-6">
           <div class="property_box wow fadeInUp">
-            <div class="propertyImg"><img alt="" src="{% static 'website/images/blog01.jpg' %}"></div>
-            <h3><a href="#">{{plot.title}}</a></h3>
-            <div class="post-meta"> <span>{{ plot.created_at}}</span>  </div>
+            <div class="propertyImg"><img alt="" src="{{ plot.images.first.image.url }}"></div>
+            <h3><a href="{% url 'resale_plot_details' plot.id %}">{{ plot.title }}</a></h3>
+            <div class="post-meta"> 
+              <span>{{ plot.created_at}}</span>
+              <!-- <span>15 Comments</span>
+              <span>15 Likes</span>  -->
+             </div>
             <p>{{plot.description}}</p>
           </div>
         </li>

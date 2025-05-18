@@ -1,0 +1,362 @@
+{% extends "dashboard/dashboard_base.html" %}
+{% load static %} 
+
+{% block content %}
+
+<style>
+    #dropzone-area {
+        border: 2px dashed #007bff;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        background-color: #f8f9fa;
+        margin-bottom: 20px;
+        position: relative;
+        cursor: pointer;
+    }
+
+    #file-preview {
+        margin-top: 15px;
+        list-style: none;
+        padding: 0;
+    }
+
+    .file-item {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border: 1px solid #ddd;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        background-color: #fff;
+    }
+
+    .file-item img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        margin-right: 15px;
+        border-radius: 5px;
+    }
+
+    .file-item span {
+        flex-grow: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .file-item button {
+        background-color: #dc3545;
+        color: #fff;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 12px;
+    }
+
+    .file-item button:hover {
+        background-color: #a71d2a;
+    }
+ 
+
+    
+</style>
+
+<div id="layout-wrapper">
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container">
+
+                 <!-- start page title -->
+                 <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                            <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item"><a >Add Property</a></li>
+                                    <li class="breadcrumb-item active">Add Commercial</li>
+                                </ol>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- end page title -->
+
+                <div class="row">
+                  <div class="col-lg-12"> 
+                      {% if messages %} 
+                          {% for message in messages %}  
+                              <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                  <b>{{ message }}</b> —check it out!
+                                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                              </div>
+                          {% endfor %}
+                      {% endif %}
+                  </div><!--end col-->
+              </div><!--end row-->
+
+                <div class="row">
+                    <div class="col-xxl-12">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-center bg-primary text-white" style="height: 60px;">
+                                <h4 class="card-title mb-0">Add Commercial</h4>
+                            </div>
+                            
+                            <div class="card-body">
+                                <form id="editCommercialForm" action="{% url 'edit_commercial' commercial.id %}" method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                            
+                                    <div class="row">
+                                        <!-- Project Name -->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="projectName" class="form-label">Project Name</label>
+                                                <input type="text" class="form-control" placeholder="Enter Project Name" name="project_name" id="projectName" value="{{ commercial.project_name }}" required>
+                                            </div>
+                                        </div>
+                            
+                                        <!-- Title -->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="title" class="form-label">Title</label>
+                                                <input type="text" class="form-control" placeholder="Enter Title" id="title" name="title" value="{{ commercial.title }}" required>
+                                            </div>
+                                        </div>
+                            
+                                        <!-- Description -->
+                                        <div class="col-md-12">
+                                            <div class="mb-3">
+                                                <label for="description" class="form-label">Description</label>
+                                                <textarea name="description" class="form-control" rows="4" placeholder="Enter Property Description" id="description" required>{{ commercial.description }}</textarea>
+                                            </div>
+                                        </div>
+                            
+                                        <!-- Parking -->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="parking" class="form-label">Parking</label>
+                                                <select class="form-select" id="parking" name="parking">
+                                                    <option value="1" {% if commercial.parking == '1' %}selected{% endif %}>1</option>
+                                                    <option value="2" {% if commercial.parking == '2' %}selected{% endif %}>2</option>
+                                                    <option value="3" {% if commercial.parking == '3' %}selected{% endif %}>3</option>
+                                                    <option value="3+" {% if commercial.parking == '3+' %}selected{% endif %}>3+</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                            
+                                        <!-- Washrooms -->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="washrooms" class="form-label">Washrooms</label>
+                                                <select class="form-select" id="washrooms" name="washrooms">
+                                                    <option value="1" {% if commercial.washrooms == '1' %}selected{% endif %}>1</option>
+                                                    <option value="2" {% if commercial.washrooms == '2' %}selected{% endif %}>2</option>
+                                                    <option value="3" {% if commercial.washrooms == '3' %}selected{% endif %}>3</option>
+                                                    <option value="3+" {% if commercial.washrooms == '3+' %}selected{% endif %}>3+</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                            
+                                        <!-- Furnishing -->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="furnishing" class="form-label">Furnishing</label>
+                                                <select class="form-select" id="furnishing" name="furnishing">
+                                                    <option value="Furnished" {% if commercial.furnishing == 'Furnished' %}selected{% endif %}>Furnished</option>
+                                                    <option value="Semi-Furnished" {% if commercial.furnishing == 'Semi-Furnished' %}selected{% endif %}>Semi-Furnished</option>
+                                                    <option value="Unfurnished" {% if commercial.furnishing == 'Unfurnished' %}selected{% endif %}>Unfurnished</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                            
+                                        <!-- Property Type -->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="propertyType" class="form-label">Property Type</label>
+                                                <select class="form-select" id="propertyType" name="property_type">
+                                                    <option value="New" {% if commercial.property_type == 'New' %}selected{% endif %}>New</option>
+                                                    <option value="ReSale" {% if commercial.property_type == 'ReSale' %}selected{% endif %}>ReSale</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                            
+                                        <!-- Maintenance -->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="maintenance" class="form-label">Maintenance (Monthly)</label>
+                                                <input type="number" class="form-control" placeholder="Enter Maintenance Amount" id="maintenance" name="maintenance" value="{{ commercial.maintenance }}">
+                                            </div>
+                                        </div>
+                            
+                                        <!-- Super Area Sqft -->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="superArea" class="form-label">Super Area (Sqft)</label>
+                                                <input type="number" class="form-control" placeholder="Enter Super Area" id="superArea" name="super_area_sqft" value="{{ commercial.super_area_sqft }}">
+                                            </div>
+                                        </div>
+                            
+                                        <!-- Carpet Area Sqft -->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="carpetArea" class="form-label">Carpet Area (Sqft)</label>
+                                                <input type="number" class="form-control" placeholder="Enter Carpet Area" id="carpetArea" name="carpet_area_sqft" value="{{ commercial.carpet_area_sqft }}">
+                                            </div>
+                                        </div>
+
+                                          <!-- Carpet Area Sqft -->
+                                          <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="carpetArea" class="form-label">Sqft Price</label>
+                                                <input type="number" class="form-control" placeholder="Enter Carpet Area" id="carpetArea" name="carpet_area_sqft" value="{{ commercial.sqft_price }}">
+                                            </div>
+                                        </div>
+
+                                          <!-- Carpet Area Sqft -->
+                                          <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="carpetArea" class="form-label">Total Price</label>
+                                                <input type="number" class="form-control" placeholder="Enter Carpet Area" id="carpetArea" name="carpet_area_sqft" value="{{ commercial.total_price }}">
+                                            </div>
+                                        </div>
+                            
+                                        <!-- Nearby School -->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="nearbySchool" class="form-label">Nearby School (Km)</label>
+                                                <input type="number" class="form-control" placeholder="Enter Distance to School" id="nearbySchool" name="nearby_school" value="{{ commercial.nearby_school }}" required>
+                                            </div>
+                                        </div>
+                            
+                                        <!-- Nearby Bus/Train -->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="nearbyTransport" class="form-label">Nearby Bus/Train (Km)</label>
+                                                <input type="number" class="form-control" placeholder="Enter Distance to Transport" id="nearbyTransport" name="nearby_busortrain" value="{{ commercial.nearby_busortrain }}" required>
+                                            </div>
+                                        </div>
+                            
+                                        <!-- Area -->
+                                        <div class="col-md-12">
+                                            <div class="mb-3">
+                                                <label for="area" class="form-label">Area</label>
+                                                <input type="text" class="form-control" placeholder="Enter Area" id="area" name="area" value="{{ commercial.area }}" required>
+                                            </div>
+                                        </div>
+                            
+                                        <!-- Address -->
+                                        <div class="col-md-12">
+                                            <div class="mb-3">
+                                                <label for="address" class="form-label">Address</label>
+                                                <textarea name="address" class="form-control" rows="2" placeholder="Enter Address" id="address" required>{{ commercial.address }}</textarea>
+                                            </div>
+                                        </div>
+                            
+                                        <!-- Images -->
+                                        <!--end col-->
+                                        <div class="col-lg-12">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h4 class="card-title mb-0">Images</h4>
+                                                </div><!-- end card header -->
+                
+                                                <div class="card-body">
+                                                    
+                                                    <div id="dropzone-area">
+                                                        <svg style="height:100px;width:100px;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M7 10V9C7 6.23858 9.23858 4 12 4C14.7614 4 17 6.23858 17 9V10C19.2091 10 21 11.7909 21 14C21 15.4806 20.1956 16.8084 19 17.5M7 10C4.79086 10 3 11.7909 3 14C3 15.4806 3.8044 16.8084 5 17.5M7 10C7.43285 10 7.84965 10.0688 8.24006 10.1959M12 12V21M12 12L15 15M12 12L9 15" 
+                                                                stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                        </svg>
+                                                        <p>Browse File to upload!</p>
+                                                        <input type="file" id="file-upload" class="form-control d-none" name="propertyimages" multiple>
+                                                    </div>
+                                                    <ul id="file-preview"></ul>
+                                                    <div class="text-end mt-3">
+                                                        <button type="submit" class="btn btn-success">Create Apartment</button>
+                                                    </div>
+                                                    
+                                                    <!-- end dropzon-preview -->
+                                                </div>
+                                                <!-- end card body -->
+                                            </div>
+                                            <!-- end card -->
+
+                                            
+                                        </div> <!-- end col -->
+                                       
+
+                                    </div>
+                                </form>
+                            </div>
+                            
+
+                        </div>
+                    </div> <!-- end col -->
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const dropzoneArea = document.getElementById('dropzone-area');
+    const fileInput = document.getElementById('file-upload');
+    const filePreview = document.getElementById('file-preview');
+
+    // Trigger file input click when the SVG is clicked
+    dropzoneArea.addEventListener('click', () => {
+        fileInput.click();
+    });
+
+    // File input change event
+    fileInput.addEventListener('change', (e) => {
+        handleFiles(e.target.files);
+    });
+
+    function handleFiles(files) {
+        Array.from(files).forEach((file) => {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                // Create list item for the file
+                const fileItem = document.createElement('li');
+                fileItem.classList.add('file-item');
+
+                // Add image preview
+                const img = document.createElement('img');
+                img.src = e.target.result;
+
+                // Add file name
+                const fileName = document.createElement('span');
+                fileName.textContent = file.name;
+
+                // Add remove button
+                const removeButton = document.createElement('button');
+                removeButton.textContent = 'Delete';
+                removeButton.addEventListener('click', () => {
+                    const filesArray = Array.from(fileInput.files).filter((f) => f !== file);
+                    const dataTransfer = new DataTransfer();
+                    filesArray.forEach((f) => dataTransfer.items.add(f));
+                    fileInput.files = dataTransfer.files;
+                    fileItem.remove();
+                });
+
+                fileItem.appendChild(img);
+                fileItem.appendChild(fileName);
+                fileItem.appendChild(removeButton);
+                filePreview.appendChild(fileItem);
+            };
+
+            reader.readAsDataURL(file);
+        });
+    }
+
+
+</script>
+
+
+
+
+{% endblock content %}

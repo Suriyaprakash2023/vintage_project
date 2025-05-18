@@ -1,0 +1,399 @@
+{% extends "dashboard/dashboard_base.html" %}
+{% load static %} 
+
+{% block content %}
+
+<style>
+    #dropzone-area {
+        border: 2px dashed #007bff;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        background-color: #f8f9fa;
+        margin-bottom: 20px;
+        position: relative;
+        cursor: pointer;
+    }
+
+    #file-preview {
+        margin-top: 15px;
+        list-style: none;
+        padding: 0;
+    }
+
+    .file-item {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border: 1px solid #ddd;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        background-color: #fff;
+    }
+
+    .file-item img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        margin-right: 15px;
+        border-radius: 5px;
+    }
+
+    .file-item span {
+        flex-grow: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .file-item button {
+        background-color: #dc3545;
+        color: #fff;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 12px;
+    }
+
+    .file-item button:hover {
+        background-color: #a71d2a;
+    }
+ 
+
+    
+</style>
+
+<div id="layout-wrapper">
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container">
+
+                 <!-- start page title -->
+                 <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                            <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item"><a >Add Property</a></li>
+                                    <li class="breadcrumb-item active">Add Appartment | Villa</li>
+                                </ol>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- end page title -->
+
+                <div class="row">
+                  <div class="col-lg-12"> 
+                      {% if messages %} 
+                          {% for message in messages %}  
+                              <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                  <b>{{ message }}</b> —check it out!
+                                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                              </div>
+                          {% endfor %}
+                      {% endif %}
+                  </div><!--end col-->
+              </div><!--end row-->
+
+                <div class="row">
+                    <div class="col-xxl-12">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-center bg-primary text-white" style="height: 60px;">
+                                <h4 class="card-title mb-0">Add Apartment</h4>
+                            </div>
+
+                            <div class="card-body">
+                                <form id="editApartmentForm" action="{% url 'edit_apartment' apartment.id %}" method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="mb-3">
+                                                <label for="emailidInput" class="form-label">Property Category</label>
+                                                <div class="input-group">
+                                                    <select class="form-select" id="inputGroupSelect02" name="appartment_type">
+                                                        <option value="Appartment" {% if apartment.appartment_type == 'Appartment' %} selected {% endif %}>Appartment</option>
+                                                        <option value="Villa" {% if apartment.appartment_type == 'Villa' %} selected {% endif %}>Villa</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                            
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="firstNameinput" class="form-label">Project Name</label>
+                                                <input type="text" class="form-control" placeholder="Enter Project Name" name="project_name" id="firstNameinput" value="{{ apartment.project_name }}" required>
+                                            </div>
+                                        </div>
+                            
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="lastNameinput" class="form-label">Title</label>
+                                                <input type="text" class="form-control" placeholder="Enter title" id="lastNameinput" name="title" value="{{ apartment.title }}" required>
+                                            </div>
+                                        </div>
+                            
+                                        <div class="col-md-12">
+                                            <label for="description" class="form-label">Description</label>
+                                            <textarea name="description" class="form-control mb-3" rows="10" style="height:100px;" placeholder="Enter the Property Description" id="address1ControlTextarea" required>{{ apartment.description }}</textarea>
+                                        </div>
+                            
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="emailidInput" class="form-label">BHK's</label>
+                                                <select class="form-select" id="inputGroupSelect02" name="bhk">
+                                                    <option value="1" {% if apartment.bhk == '1' %} selected {% endif %}>1</option>
+                                                    <option value="2" {% if apartment.bhk == '2' %} selected {% endif %}>2</option>
+                                                    <option value="3" {% if apartment.bhk == '3' %} selected {% endif %}>3</option>
+                                                    <option value="3+" {% if apartment.bhk == '3+' %} selected {% endif %}>3+</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                            
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="emailidInput" class="form-label">Bathrooms</label>
+                                                <select class="form-select" id="inputGroupSelect02" name="bathrooms">
+                                                    <option value="1" {% if apartment.bathrooms == '1' %} selected {% endif %}>1</option>
+                                                    <option value="2" {% if apartment.bathrooms == '2' %} selected {% endif %}>2</option>
+                                                    <option value="3" {% if apartment.bathrooms == '3' %} selected {% endif %}>3</option>
+                                                    <option value="3+" {% if apartment.bathrooms == '3+' %} selected {% endif %}>3+</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                            
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="emailidInput" class="form-label">Parking</label>
+                                                <select class="form-select" id="inputGroupSelect02" name="parking">
+                                                    <option value="1" {% if apartment.parking == '1' %} selected {% endif %}>1</option>
+                                                    <option value="2" {% if apartment.parking == '2' %} selected {% endif %}>2</option>
+                                                    <option value="3" {% if apartment.parking == '3' %} selected {% endif %}>3</option>
+                                                    <option value="3+" {% if apartment.parking == '3+' %} selected {% endif %}>3+</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                            
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="emailidInput" class="form-label">Total Floors</label>
+                                                <select class="form-select" id="inputGroupSelect02" name="total_floors">
+                                                    <option value="1" {% if apartment.total_floors == '1' %} selected {% endif %}>1</option>
+                                                    <option value="2" {% if apartment.total_floors == '2' %} selected {% endif %}>2</option>
+                                                    <option value="3" {% if apartment.total_floors == '3' %} selected {% endif %}>3</option>
+                                                    <option value="3+" {% if apartment.total_floors == '3+' %} selected {% endif %}>3+</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                            
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="furnishing" class="form-label">Furnishing</label>
+                                                <select class="form-select" id="inputGroupSelect02" name="furnishing">
+                                                    <option value="Furnished" {% if apartment.furnishing == 'Furnished' %} selected {% endif %}>Furnished</option>
+                                                    <option value="Semi-Furnished" {% if apartment.furnishing == 'Semi-Furnished' %} selected {% endif %}>Semi-Furnished</option>
+                                                    <option value="UnFurnished" {% if apartment.furnishing == 'UnFurnished' %} selected {% endif %}>UnFurnished</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                            
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="emailidInput" class="form-label">Property Type</label>
+                                                <select class="form-select" id="inputGroupSelect02" name="property_type">
+                                                    <option value="New" {% if apartment.property_type == 'New' %} selected {% endif %}>New</option>
+                                                    <option value="ReSale" {% if apartment.property_type == 'ReSale' %} selected {% endif %}>ReSale</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                            
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="listedBy" class="form-label">Listed By</label>
+                                                <select class="form-select" id="inputGroupSelect02" name="listed_by">
+                                                    <option value="Builder" {% if apartment.listed_by == 'Builder' %} selected {% endif %}>Builder</option>
+                                                    <option value="Dealer" {% if apartment.listed_by == 'Dealer' %} selected {% endif %}>Dealer</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                            
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="facingSide" class="form-label">Facing Side</label>
+                                                <select class="form-select" id="inputGroupSelect02" name="facing_side">
+                                                    <option value="East" {% if apartment.facing == 'East' %} selected {% endif %}>East</option>
+                                                    <option value="West" {% if apartment.facing == 'West' %} selected {% endif %}>West</option>
+                                                    <option value="North" {% if apartment.facing == 'North' %} selected {% endif %}>North</option>
+                                                    <option value="South" {% if apartment.facing == 'South' %} selected {% endif %}>South</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                            
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="floorNo" class="form-label">Floor Number</label>
+                                                <input type="number" maxlength='4' class="form-control" placeholder="Enter Floor No" id="emailidInput" name="floor_no" value="{{ apartment.floor_no }}">
+                                            </div>
+                                        </div>
+                            
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="maintenance" class="form-label">Maintenance (Monthly)</label>
+                                                <input type="number" class="form-control" placeholder="Maintenance per month" id="maintenance" name="maintenance" value="{{ apartment.maintenance }}">
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="landAreaSqft" class="form-label">Land Area Sqft</label>
+                                                <input type="number" class="form-control" placeholder="Enter Land Area Sqft" id="landAreaSqft" name="land_area_sqft" value="{{ apartment.land_area_sqft }}">
+                                            </div>
+                                        </div>
+                                        <!--end col-->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="carpetAreaSqft" class="form-label">Carpet Area Sqft</label>
+                                                <input type="number" class="form-control" placeholder="Enter Carpet Area Sqft" id="carpetAreaSqft" name="carpet_area_sqft" value="{{ apartment.carpet_area_sqft }}">
+                                            </div>
+                                        </div>
+                                        <!--end col-->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="emailidInput" class="form-label">Appartmrnt per Sqft Price</label>
+                                                <input type="number"  class="form-control" placeholder="Enter Sqft Price" id="emailidInput" name="sqft_price" value="{{ apartment.sqft_price }}" >
+                                            </div>
+                                        </div>
+                                        <!--end col-->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="emailidInput" class="form-label">Appartment Price</label>
+                                                <input type="number"  class="form-control" placeholder="Enter Total Price" id="emailidInput" name="total_price" value="{{ apartment.total_price }}" >
+                                            </div>
+                                        </div>
+                                          <!--end col-->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="nearbySchool" class="form-label">Nearby School (Km)</label>
+                                                <input type="number" class="form-control" placeholder="Enter Nearby School Km" id="nearbySchool" name="nearby_school" value="{{ apartment.nearby_school }}" required>
+                                            </div>
+                                        </div>
+                                        <!--end col-->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="nearbyBusOrTrain" class="form-label">Nearby Bus Stop or Railway Station (Km)</label>
+                                                <input type="number" class="form-control" placeholder="Enter KM of Bus Stop or Railway Station" id="nearbyBusOrTrain" name="nearby_busortrain" value="{{ apartment.nearby_busortrain }}" required>
+                                            </div>
+                                        </div>
+                                        <!--end col-->
+                                        <div class="col-md-12">
+                                            <div class="mb-3">
+                                                <label for="area" class="form-label">Area</label>
+                                                <input type="text" class="form-control" placeholder="Enter the Property Area" id="area" name="area" value="{{ apartment.area }}" required>
+                                            </div>
+                                        </div>
+                                        <!--end col-->
+                                        
+                            
+                                        <!-- Additional fields for Land Area, Carpet Area, Nearby Amenities, Address, etc. -->
+                                        <!-- You can similarly pre-populate all these fields with the existing apartment data as shown above -->
+                            
+                                        <div class="col-md-12">
+                                            <div class="mb-3">
+                                                <label for="address1ControlTextarea" class="form-label">Address</label>
+                                                <textarea name="address" class="form-control" placeholder="Enter the Property Address" id="address1ControlTextarea" required>{{ apartment.address }}</textarea>
+                                            </div>
+                                        </div>
+                            
+                                        <div class="col-lg-12">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h4 class="card-title mb-0">Images</h4>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div id="dropzone-area">
+                                                        <svg style="height:100px;width:100px;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M7 10V9C7 6.23858 9.23858 4 12 4C14.7614 4 17 6.23858 17 9V10C19.2091 10 21 11.7909 21 14C21 15.4806 20.1956 16.8084 19 17.5M7 10C4.79086 10 3 11.7909 3 14C3 15.4806 3.8044 16.8084 5 17.5M7 10C7.43285 10 7.84965 10.0688 8.24006 10.1959M12 12V21M12 12L15 15M12 12L9 15" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                        </svg>
+                                                        <p>Browse File to upload!</p>
+                                                        <input type="file" id="file-upload" class="form-control d-none" name="propertyimages" multiple>
+                                                    </div>
+                                                    <ul id="file-preview"></ul>
+                                                    <div class="text-end mt-3">
+                                                        <button type="submit" class="btn btn-success">Update Apartment</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            
+                        </div>
+                    </div> <!-- end col -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const dropzoneArea = document.getElementById('dropzone-area');
+    const fileInput = document.getElementById('file-upload');
+    const filePreview = document.getElementById('file-preview');
+
+    // Trigger file input click when the SVG is clicked
+    dropzoneArea.addEventListener('click', () => {
+        fileInput.click();
+    });
+
+    // File input change event
+    fileInput.addEventListener('change', (e) => {
+        handleFiles(e.target.files);
+    });
+
+    function handleFiles(files) {
+        Array.from(files).forEach((file) => {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                // Create list item for the file
+                const fileItem = document.createElement('li');
+                fileItem.classList.add('file-item');
+
+                // Add image preview
+                const img = document.createElement('img');
+                img.src = e.target.result;
+
+                // Add file name
+                const fileName = document.createElement('span');
+                fileName.textContent = file.name;
+
+                // Add remove button
+                const removeButton = document.createElement('button');
+                removeButton.textContent = 'Delete';
+                removeButton.addEventListener('click', () => {
+                    const filesArray = Array.from(fileInput.files).filter((f) => f !== file);
+                    const dataTransfer = new DataTransfer();
+                    filesArray.forEach((f) => dataTransfer.items.add(f));
+                    fileInput.files = dataTransfer.files;
+                    fileItem.remove();
+                });
+
+                fileItem.appendChild(img);
+                fileItem.appendChild(fileName);
+                fileItem.appendChild(removeButton);
+                filePreview.appendChild(fileItem);
+            };
+
+            reader.readAsDataURL(file);
+        });
+    }
+
+
+</script>
+
+
+
+
+{% endblock content %}

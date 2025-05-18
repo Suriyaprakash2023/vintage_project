@@ -1,0 +1,178 @@
+{% extends 'website/base.html' %}
+{% load static %}
+{% block content %}
+<!doctype html>
+<html lang="en">
+<!-- Mirrored from www.malikhassan.com/html/evernest/property_single.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 09 Nov 2024 13:29:36 GMT -->
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<link href="{% static 'css/all.css' %}" rel="stylesheet">
+<!-- Owl Carousel CSS -->
+<link href="{% static 'css/owl.carousel.css' %}" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Poppins:100,200,300,400,500,600,700,800,900&amp;display=swap" rel="stylesheet">
+<link href="{% static 'css/animate.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/nice-select.css' %}">
+<link rel="stylesheet" href="{% static 'css/flexslider.css' %}">
+<link href="{% static 'css/style.css' %}" rel="stylesheet">
+<title>Real Estate</title>
+</head>
+
+<body>
+ 
+
+<!--Inner Heading Start-->
+<div class="innerHeading">
+  <div class="container">
+    <h1>Property Single</h1>
+  </div>
+</div>
+<!--Inner Heading End--> 
+
+<!--Inner Content Start-->
+
+<div class="innercontent">
+  <div class="container">
+
+    {% for plot in plots %}
+    <div class="row">
+        <div class="col-4 mb-4">
+            <div id="slider" class="flexslider wow fadeInUp">
+                <ul class="slides">
+                 
+                    {% if plot.images.all %}
+                        {% for image in plot.images.all %}
+                       
+                            <li><img alt="{{ plot.title }}" src="{{ image.image.url }}" /></li>
+                        {% endfor %}
+                        {% else %}
+                            <li><img alt="No Image" src="{% static 'website/images/slide1.jpg' %}" /></li>
+                            <li><img alt="No Image" src="{% static 'website/images/slide2.jpg' %}" /></li>
+                            <li><img alt="No Image" src="{% static 'website/images/slide3.jpg' %}" /></li>
+                            <li><img alt="No Image" src="{% static 'website/images/slide4.jpg' %}" /></li>
+                            <li><img alt="No Image" src="{% static 'website/images/slide5.jpg' %}" /></li>
+                            <li><img alt="No Image" src="{% static 'website/images/slide6.jpg' %}" /></li>
+                            <li><img alt="No Image" src="{% static 'website/images/slide7.jpg' %}" /></li>
+                        {% endif %}
+                </ul>
+            </div>
+        </div>
+        
+  
+  
+        <div class="property_details">
+          <div class="row property_head wow fadeInUp">
+            <div class="col-lg-8 col-md-8">
+              <h3>{{ plot.project_name }}</h3>
+              <div class="property_address">{{ plot.total_price }}</div>
+            </div>
+            <div class="col-lg-4 col-md-4">
+              <div class="heart_info">
+                <div class="heart_icon"><a href="#"><i class="fa fa-heart" aria-hidden="true"></i></a></div>
+                <div class="heart_icon exchange_icon"><a href="#"><i class="fas fa-exchange-alt"></i></a></div>
+                <div class="property_price">$ {{ plot.sqft }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="property_widget wow fadeInUp">
+            <h3 class="desc_head">Description</h3>
+            <p>{{ plot.description }}</p>
+            <p>Ut pretium, nunc in bibendum iaculis, neque tellus efficitur lectus, sit amet tincidunt justo nisi at risus. Vestibulum ante est, fermentum in laoreet nec, viverra eu mauris. In condimentum ac mauris a efficitur. Ut fringilla sed mauris eget convallis. Phasellus volutpat mattis tincidunt. Pellentesque non lacus felis. Donec ac sem eu libero consequat congue in vehicula justo. Nulla blandit id tortor non luctus. Donec in odio condimentum, condimentum nisi non, porta nisl. Donec sed consectetur erat, eu imperdiet urna. Praesent eu sapien orci.</p>
+          </div>
+          <div class="property_widget wow fadeInUp">
+            <h3 class="desc_head">Property Details</h3>
+            <div class="row prop_del">
+              <div class="col-lg-6">
+                <ul class="property_list">
+                  <li><span>Property ID :</span> {{ plot.id }}</li>
+                  <li><span>Project Name :</span> {{ plot.project_name }}</li>
+                  <li><span>Sqft Price :</span> {{ plot.sqft }}</li>
+                  <li><span>Property Size :</span> {{ plot.total_sqft }}</li>
+                  <li><span>Length :</span> {{ plot.length }}</li>
+                  <li><span>Breath :</span> {{ plot.breadth }}</li>
+                </ul>
+              </div>
+              <div class="col-lg-6">
+                <ul class="property_list">
+                  <li><span>Year Built :</span> {{ plot.created_at }}</li>
+                  <li><span>Facing :</span> {{ plot.facing }}</li>
+                  <li><span>Near By School in KM :</span> {{ plot.nearby_school }}</li>
+                  <li><span>Near By Bus stand in KM :</span> {{ plot.nearby_busortrain }}</li>
+                  <li><span>Property Type :</span>{{ plot.property_type }}</li>
+                  <li><span>Property Status :</span> {{ plot.avaliable }}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="property_widget wow fadeInUp">
+            <h3 class="desc_head">Features</h3>
+            <ul class="list-unstyled icon-checkbox">
+              <li>air conditioning</li>
+              <li>Laundry Room</li>
+              <li>swiming pool</li>
+              <li>air conditioning</li>
+              <li>Central Heating</li>
+              <li>gym</li>
+              <li>alarm</li>
+              <li>Central Heating</li>
+              <li>spa &amp; massage</li>
+              <li>pets allow</li>
+              <li>window Covering</li>
+              <li>Internet</li>
+              <li>car parking </li>
+            </ul>
+          </div>
+          <div class="property_widget wow fadeInUp">
+            <h3 class="desc_head">Floor PLans</h3>
+            <div class="floor_plans faqs">
+              <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h4 class="panel-title"> <a data-toggle="collapse" data-parent="#accordion" class="collapsed" href="#collapse5">Ground Floor 497 sq ft</a> </h4>
+                  </div>
+                  <div id="collapse5" class="panel-collapse collapse">
+                    <div class="panel-body">
+                      <div class="floorImg"><img alt="" src="{% static 'website/images/ground_floor.jpg' %}"></div>
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tempus ullamcorper libero tincidunt fermentum. Phasellus lobortis felis ac molestie dictum. Morbi at efficitur mauris. Aliquam lobortis massa non metus vehicula, at lacinia orci suscipit. Nulla porta urna id turpis aliquet elementum. </div>
+                  </div>
+                </div>
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h4 class="panel-title"> <a data-toggle="collapse" data-parent="#accordion" class="collapsed" href="#collapse2"> First Floor 250 sq ft</a> </h4>
+                  </div>
+                  <div id="collapse2" class="panel-collapse collapse">
+                    <div class="panel-body">
+                      <div class="floorImg"><img alt="" src="{% static 'website/images/first_floor.jpg' %}"></div>
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tempus ullamcorper libero tincidunt fermentum. Phasellus lobortis felis ac molestie dictum. Morbi at efficitur mauris. Aliquam lobortis massa non metus vehicula, at lacinia orci suscipit. Nulla porta urna id turpis aliquet elementum. </div>
+                  </div>
+                </div>
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h4 class="panel-title"> <a data-toggle="collapse" data-parent="#accordion" class="collapsed" href="#collapse3"> Garage 120 sq ft </a> </h4>
+                  </div>
+                  <div id="collapse3" class="panel-collapse collapse">
+                    <div class="panel-body">
+                      <div class="floorImg"><img alt="" src="{% static 'website/images/garage_plan.jpg' %}"></div>
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tempus ullamcorper libero tincidunt fermentum. Phasellus lobortis felis ac molestie dictum. Morbi at efficitur mauris. Aliquam lobortis massa non metus vehicula, at lacinia orci suscipit. Nulla porta urna id turpis aliquet elementum. </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+        <div class="alert alert-info">No plots found.</div>
+    {% endfor %}
+    
+  </div>
+</div>
+
+
+<!--Inner Content End--> 
+</body>
+</html>
+{% endblock content %}

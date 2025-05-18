@@ -51,11 +51,10 @@
           </div>
           <!-- end page title -->
 
-          <div class="row">
+          <!-- <div class="row">
             {% for plot in plots %}
               <div class="col-sm-6 col-xl-3">
-                  <!-- Simple card -->
-                  <div class="card">
+                <div class="card">
                     {% if plot.images %}
                     {% with plot.images.all|first as first_image %}
                     {% if first_image %}
@@ -64,11 +63,7 @@
                         <img class="card-img-top img-fluid" src="{% static 'website/images/propertyImg03.jpg' %}" alt="Default image cap">
                     {% endif %}
                 {% endwith %}
-
-                    
-                      
-                    
-                      {% endif %}
+                    {% endif %}
                       <div class="card-body">
                           <h4 class="card-title mb-2">{{plot.title}}</h4>
                           <p class="card-text">{{plot.description}}</p>
@@ -76,10 +71,96 @@
                               <a href="" class="btn btn-primary">View</a>
                           </div>
                       </div>
-                  </div><!-- end card -->
-              </div><!-- end col -->
+                  </div>
+              </div>
             {% endfor %}
-          </div><!-- end row -->
+          </div> -->
+
+
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="card">
+                <div class="card-header">
+                  <h5 class="card-title mb-0">Buttons Datatables</h5>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table id="buttons-datatables" class="display table table-bordered table-nowrap" style="width:100%">
+                      <thead>
+                        <tr>
+                          <th>SR No.</th>
+                          <th>ID</th>
+                          <th>Project Name</th>
+                          <th>Title</th>
+                          <th>Description</th>
+                          <th>SQFT Per Price </th>
+                          <th>Area</th>
+                          <th>Address</th>
+                          <th>Near By School in Km</th>
+                          <th>Near By Railway Station in Km</th>
+                          <th>Length</th>
+                          <th>Breath</th>
+                          <th>Total Sqft</th>
+                          <th>Total Price</th>
+                          <th>facing</th>
+                          <th>listed_by</th>
+                          <th>property_type</th>
+                          <th>images</th>
+                          <th>avaliable</th>
+                          <th>created_at</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for plot in plots %}
+                        <tr>
+                          <td>{{ forloop.counter }}</td>
+                          <td>{{ plot.id }}</td>
+                          <td>{{ plot.project_name }}</td>
+                          <td>{{ plot.title }}</td>
+                          <td>{{ plot.description }}</td>
+                          <td>{{plot.sqft}}</td>
+                          <td>{{ plot.area }}</td>
+                          <td>{{ plot.address }}</td>
+                          <td>{{ plot.nearby_school }}</td>
+                          <td>{{ plot.nearby_busortrain }}</td>
+                          <td>{{ plot.length }}</td>
+                          <td>{{ plot.breadth }}</td>
+                          <td>{{ plot.total_sqft }}</td>
+                          <td>{{ plot.total_price }}</td>
+                          <td>{{ plot.facing }}</td>
+                          <td>{{ plot.listed_by }}</td>
+                          <td>{{ plot.property_type }}</td>
+                          
+                          <td>
+                            {% for image in plot.images.all %}
+                            <img src="{{ image.image.url }}" alt="{{ image.image.name }}" width="100">
+                            {% endfor %}
+                          </td>
+                          <td>{{ plot.avaliable }}</td>
+                          <td>{{ plot.created_at }}</td>
+
+
+                          <td>
+                            {% if plot.id %}
+                                <a href="{% url 'edit_plot' plot.id %}" class="btn btn-warning btn-sm">Edit</a>
+                                <a href="{% url 'delete_plot' plot.id %}" class="btn btn-danger btn-sm"
+                                  onclick="return confirm('Are you sure you want to delete this villa?')">Delete</a>
+                            {% else %}
+                                <span class="text-muted">No actions available</span>
+                            {% endif %}
+                          </td>
+    
+                       
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
 
       </div>

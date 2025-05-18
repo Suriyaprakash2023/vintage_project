@@ -1,0 +1,275 @@
+{% extends "dashboard/dashboard_base.html" %}
+{% load static %} 
+
+{% block content %}
+<style>
+    #dropzone-area {
+        border: 2px dashed #007bff;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        background-color: #f8f9fa;
+        margin-bottom: 20px;
+        position: relative;
+        cursor: pointer;
+    }
+
+    #file-preview {
+        margin-top: 15px;
+        list-style: none;
+        padding: 0;
+    }
+
+    .file-item {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border: 1px solid #ddd;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        background-color: #fff;
+    }
+
+    .file-item img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        margin-right: 15px;
+        border-radius: 5px;
+    }
+
+    .file-item span {
+        flex-grow: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .file-item button {
+        background-color: #dc3545;
+        color: #fff;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 12px;
+    }
+
+    .file-item button:hover {
+        background-color: #a71d2a;
+    }
+ 
+
+    
+</style>
+
+<div id="layout-wrapper">
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container">
+
+                 <!-- start page title -->
+                 <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                            <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item"><a >Add Photos</a></li>
+                                    <li class="breadcrumb-item active">Add Story</li>
+                                </ol>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- end page title -->
+
+                <div class="row">
+                  <div class="col-lg-12"> 
+                      {% if messages %} 
+                          {% for message in messages %}  
+                              <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                  <b>{{ message }}</b> —check it out!
+                                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                              </div>
+                          {% endfor %}
+                      {% endif %}
+                  </div><!--end col-->
+              </div><!--end row-->
+
+                <div class="row">
+                    <div class="col-xxl-12">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-center bg-primary text-white" style="height: 60px;">
+                                <h4 class="card-title mb-0">Add Customers Photo</h4>
+                            </div>
+
+                            <div class="card-body">
+                                <form id="myForm" action="{% url 'd_gallery' %}" method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+
+                                    <div class="row">
+                                        
+                                          <div class="col-md-6">
+                                              <div class="mb-3">
+                                                  <label for="firstNameinput" class="form-label">Customer Name</label>
+                                                  <input type="text" class="form-control" placeholder="Enter Customer Name" name="customer_name" id="firstNameinput" required>
+                                              </div>
+                                          </div>
+                                        <!--end col-->
+                                        <div class="col-md-12">
+                                            <label for="description" class="form-label">Reviews</label>
+                                            <textarea name="reviews" class="form-control mb-3" rows="4" style="height:100px;" 
+                                                      placeholder="Enter the Customer Reviews (Max: 50 words)" 
+                                                      id="address1ControlTextarea" required></textarea>
+                                        </div>
+                                        
+                                         <!--end col-->
+                                          <div class="col-lg-12">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h4 class="card-title mb-0">Images</h4>
+                                                </div>
+                
+                                                <div class="card-body">
+                                                    
+                                                    <div id="dropzone-area">
+                                                        <svg style="height:100px;width:100px;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M7 10V9C7 6.23858 9.23858 4 12 4C14.7614 4 17 6.23858 17 9V10C19.2091 10 21 11.7909 21 14C21 15.4806 20.1956 16.8084 19 17.5M7 10C4.79086 10 3 11.7909 3 14C3 15.4806 3.8044 16.8084 5 17.5M7 10C7.43285 10 7.84965 10.0688 8.24006 10.1959M12 12V21M12 12L15 15M12 12L9 15" 
+                                                                stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                        </svg>
+                                                        <p>Browse File to upload!</p>
+                                                        <input type="file" id="file-upload" class="form-control d-none" name="customer_images" multiple>
+                                                    </div>
+                                                    <ul id="file-preview"></ul>
+                                                    <div class="text-end mt-3">
+                                                        <button type="submit" class="btn btn-success">Create Gallery</button>
+                                                    </div>
+                                                    
+                                                    <!-- end dropzon-preview -->
+                                                </div>
+                                                <!-- end card body -->
+                                            </div>
+                                            <!-- end card -->
+
+                                            
+                                        </div> <!-- end col -->
+                                       
+
+                                </form>
+                            </div>
+                        </div>
+                    </div> <!-- end col -->
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                      <div class="card">
+                        <div class="card-header">
+                          <h5 class="card-title mb-0"> # Our Valuable Customers</h5>
+                        </div>
+                        <div class="card-body">
+                          <div class="table-responsive">
+                            <table id="buttons-datatables" class="display table table-bordered table-nowrap" style="width:100%">
+                              <thead>
+                                    <tr>
+                                    <th>SR No.</th>
+                                    <th>Customer Name</th>
+                                    <th>Reviews</th>
+                                    <th>Created At</th>
+                                    <th>Images</th>
+                                    <th>Actions</th>
+                                    </tr>
+                              </thead>
+                             <tbody>
+                                {% for gallery in gallerys %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ gallery.customer_name }}</td>
+                                    <td>{{ gallery.reviews }}</td>
+                                    <td>{{ gallery.created_at }}</td>
+                                    <td>
+                                        {% if gallery.customer_images %}
+                                            <img src="{{ gallery.customer_images.url }}" alt="Gallery Image" width="100">
+                                        {% else %}
+                                            <span class="text-muted">No Image</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if gallery.id %}
+                                            <a href="{% url 'delete_gallery' gallery.id %}" class="btn btn-danger btn-sm"
+                                            onclick="return confirm('Are you sure you want to delete this gallery?')">Delete</a>
+                                        {% else %}
+                                            <span class="text-muted">No actions available</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const dropzoneArea = document.getElementById('dropzone-area');
+    const fileInput = document.getElementById('file-upload');
+    const filePreview = document.getElementById('file-preview');
+
+    // Trigger file input click when the SVG is clicked
+    dropzoneArea.addEventListener('click', () => {
+        fileInput.click();
+    });
+
+    // File input change event
+    fileInput.addEventListener('change', (e) => {
+        handleFiles(e.target.files);
+    });
+
+    function handleFiles(files) {
+        Array.from(files).forEach((file) => {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                // Create list item for the file
+                const fileItem = document.createElement('li');
+                fileItem.classList.add('file-item');
+
+                // Add image preview
+                const img = document.createElement('img');
+                img.src = e.target.result;
+
+                // Add file name
+                const fileName = document.createElement('span');
+                fileName.textContent = file.name;
+
+                // Add remove button
+                const removeButton = document.createElement('button');
+                removeButton.textContent = 'Delete';
+                removeButton.addEventListener('click', () => {
+                    const filesArray = Array.from(fileInput.files).filter((f) => f !== file);
+                    const dataTransfer = new DataTransfer();
+                    filesArray.forEach((f) => dataTransfer.items.add(f));
+                    fileInput.files = dataTransfer.files;
+                    fileItem.remove();
+                });
+
+                fileItem.appendChild(img);
+                fileItem.appendChild(fileName);
+                fileItem.appendChild(removeButton);
+                filePreview.appendChild(fileItem);
+            };
+
+            reader.readAsDataURL(file);
+        });
+    }
+
+
+</script>
+
+{% endblock content %}

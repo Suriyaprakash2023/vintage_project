@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+    <thead>
+        <tr>
+            <th>SR No.</th>
+            <th>ID</th>
+            <th>Project Name</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>BHK</th>
+            <th>Bathrooms</th>
+            <th>Parking</th>
+            <th>Floor No</th>
+            <th>Total Floor</th>
+            <th>Maintanance</th>
+            <th>Furnishing</th>
+            <th>Land_area_sqft</th>
+            <th>Carpet_area_sqft</th>
+            <th>Area</th>
+            <th>Address</th>
+            <th>Near By School in Km</th>
+            <th>Near By Railway Station in Km</th>
+            <th>Facing</th>
+            <th>Listed By</th>
+            <th>Property_Type</th>
+            <th>Apartment Type</th>
+            <th>Images</th>
+            <th>Available</th>
+            <th>Actions</th>
+            <th>Created_at</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for apartment in apartments %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ apartment.id }}</td>
+            <td>{{ apartment.project_name }}</td>
+            <td>{{ apartment.title }}</td>
+            <td>{{ apartment.description }}</td>
+            <td>{{apartment.bhk}}</td>
+            <td>{{ apartment.bathrooms }}</td>
+            <td>{{ apartment.parking }}</td>
+            <td>{{ apartment.floor_no }}</td>
+            <td>{{ apartment.total_floors }}</td>
+            <td>{{ apartment.maintenance }}</td>
+            <td>{{ apartment.furnishing }}</td>
+            <td>{{ apartment.land_area_sqft }}</td>
+            <td>{{ apartment.carpet_area_sqft }}</td>
+            <td>{{ apartment.area }}</td>
+            <td>{{ apartment.address }}</td>
+            <td>{{ apartment.nearby_school }}</td>
+            <td>{{ apartment.nearby_busortrain }}</td>
+            <td>{{ apartment.facing }}</td>
+            <td>{{ apartment.listed_by }}</td>
+            <td>{{ apartment.property_type }}</td>
+            <td>{{ apartment.appartment_type }}</td>
+            <td>{{ apartment.images }}</td>
+            <td>{{ apartment.avaliable }}</td>
+            <td>{{ apartment.created_at }}</td>
+           
+            <td>
+                <a href="{% url 'edit_apartment' apartment.id %}" class="btn btn-warning btn-sm">Edit</a>
+                <a href="{% url 'delete_apartment' apartment.id %}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this apartment?')">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</body>
+</html>

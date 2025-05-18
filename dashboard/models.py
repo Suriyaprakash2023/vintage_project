@@ -7,6 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import BaseUserManager
 from django.db.models.signals import post_migrate
 from django.dispatch import receiver
+import datetime
 
 
 class AlphaNumericFieldfour(models.CharField):
@@ -91,9 +92,6 @@ groups = [
     "Admin",
    
  ]
-
-
-
 @receiver(post_migrate)
 def create_groups(sender, **kwargs):
     with connection.cursor() as cursor:
@@ -166,6 +164,8 @@ class Plot(models.Model):
     title = models.CharField(max_length=200, null=True, blank=True)
     description = models.CharField(max_length=700, null=True, blank=True)
     sqft = models.CharField(max_length=10, null=True, blank=True)
+    total_sqft = models.CharField(max_length=10, null=True, blank=True)
+    total_price = models.CharField(max_length=10, null=True, blank=True)
     area = models.CharField(max_length=100, null=True, blank=True)
     address = models.CharField(max_length=200, null=True, blank=True)
     nearby_school = models.CharField(max_length=100, null=True, blank=True)
@@ -197,6 +197,8 @@ class Appartment(models.Model):
     furnishing = models.CharField(max_length=20, choices=FURNISH_TYPE, null=True, blank=True)
     land_area_sqft = models.CharField(max_length=10, null=True, blank=True)
     carpet_area_sqft = models.CharField(max_length=10, null=True, blank=True)
+    sqft_price = models.CharField(max_length=10, null=True, blank=True)
+    total_price = models.CharField(max_length=10, null=True, blank=True)
     area = models.CharField(max_length=100, null=True, blank=True)
     address = models.CharField(max_length=200, null=True, blank=True)
     nearby_school = models.CharField(max_length=100, null=True, blank=True)
@@ -222,6 +224,8 @@ class Commercial(models.Model):
     listed_by = models.CharField(max_length=10, choices=LISTED_BY, null=True, blank=True)
     super_area_sqft = models.CharField(max_length=10, null=True, blank=True)
     carpet_area_sqft = models.CharField(max_length=10, null=True, blank=True)
+    sqft_price = models.CharField(max_length=10, null=True, blank=True)
+    total_price = models.CharField(max_length=10, null=True, blank=True)
     maintenance = models.CharField(max_length=10, null=True, blank=True)
     facing = models.CharField(choices=FACING_SIDE, max_length=30, null=True, blank=True)
     parking = models.CharField(max_length=10, null=True, blank=True)
@@ -237,3 +241,25 @@ class Commercial(models.Model):
 
     def __str__(self):
         return self.title
+    
+
+class Contact(models.Model):
+    name = models.CharField(max_length=100, null=True, blank=True)
+    email = models.EmailField(null=True, blank=True)
+    phone = models.CharField(max_length=15, null=True, blank=True)
+    subject = models.CharField(max_length=100,null=True, blank=True)
+    message = models.TextField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+    
+
+class Gallery(models.Model):
+    customer_name = models.CharField(max_length=100,null=True, blank=True)
+    reviews = models.CharField(max_length=250,null=True, blank=True)
+    customer_images = models.ImageField(upload_to='gallery_images/',null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True,null=True, blank=True)
+
+    def __str__(self):
+        return self.g_title

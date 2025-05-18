@@ -29,15 +29,15 @@
     <ul>
       <li data-slotamount="7" data-transition="3dcurtain-horizontal" data-masterspeed="1000" data-saveperformance="on"> <img alt="" alt="" src="{% static 'website/images/dummy.png' %}" data-lazyload="{% static 'website/images/banner.jpg' %}">
         <div class="caption lft large-title tp-resizeme slidertext2" data-x="center" data-y="150" data-speed="600" data-start="2200"><span>Find Your Dreams</div>
-        <div class="caption lfb large-title tp-resizeme slidertext3" data-x="center" data-y="260" data-speed="600" data-start="2800">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec <br/>
+        <div class="caption lfb large-title tp-resizeme slidertext3" data-x="center" data-y="260" data-speed="600" data-start="2800">"Real estate is not just about property, it’s about people." <br/>
           convallis fringilla nibh ac laoreet.</div>
-        <div class="caption lfb large-title tp-resizeme slidertext4" data-x="center" data-y="340" data-speed="600" data-start="3500"><a href="#">Contact Us </a></div>
+        <div class="caption lfb large-title tp-resizeme slidertext4" data-x="center" data-y="340" data-speed="600" data-start="3500"><a href="{% url 'contact' %}">Contact Us </a></div>
       </li>
       <li data-slotamount="7" data-transition="slotzoom-horizontal" data-masterspeed="1000" data-saveperformance="on"> <img alt="" alt="" src="{% static 'website/images/dummy.png' %}" data-lazyload="{% static 'website/images/banner2.jpg' %}">
         <div class="caption lft large-title tp-resizeme slidertext2" data-x="center" data-y="150" data-speed="600" data-start="2200"><span>Find Your Dreams</div>
-        <div class="caption lfb large-title tp-resizeme slidertext3" data-x="center" data-y="260" data-speed="600" data-start="2800">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec <br/>
+        <div class="caption lfb large-title tp-resizeme slidertext3" data-x="center" data-y="260" data-speed="600" data-start="2800">"A good property sells itself, but a great property will require the right agent to make the sale." <br/>
           convallis fringilla nibh ac laoreet.</div>
-        <div class="caption lfb large-title tp-resizeme slidertext4" data-x="center" data-y="340" data-speed="600" data-start="3500"><a href="#">Contact Us </a></div>
+        <div class="caption lfb large-title tp-resizeme slidertext4" data-x="center" data-y="340" data-speed="600" data-start="3500"><a href="{% url 'contact' %}">Contact Us </a></div>
       </li>
     </ul>
   </div>
@@ -130,70 +130,52 @@
 <div class="property-wrap wow fadeInUp">
   <div class="container">
     <div class="title">
-      <h1>Featured Properties <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span></h1>
+      <h1>Featured Properties <span>
+        "Let us help you find the perfect dream home in Chennai, where comfort meets convenience!"</span></h1>
     </div>
     
     <!--Row Start-->
     <ul class="row">
-      <!--col-lg-4 Start-->
-      <li class="col-lg-4">
-        <div class="property_box wow fadeInUp">
-          <div class="propertyImg"><img alt="" src="{% static 'website/images/propertyImg01.jpg' %}"></div>
-          <h3><a href="#">Upper portion Apartment for sale</a></h3>
-          <div class="property_location"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Staten Island / Queens</div>
-          <div class="heart_info">
-            <div class="heart_icon"><a href="#"><i class="fas fa-heart" aria-hidden="true"></i></a></div>
-            <div class="heart_icon exchange_icon"><a href="#"><i class="fas fa-exchange-alt"></i></a></div>
-            <div class="property_price">$ 488.00</div>
-          </div>
-          <div class="propert_info">
-            <ul class="row">
-              <li class="col-4">
-                <div class="proprty_icon"><img alt="" src="{% static 'website/images/bedroom_icon.png' %}"></div>
-                <h5>Bedrooms 3</h5>
-              </li>
-              <li class="col-4">
-                <div class="proprty_icon"><img alt="" src="{% static 'website/images/bathroom_icon.png' %}"></div>
-                <h5>Bathrooms 2</h5>
-              </li>
-              <li class="col-4">
-                <div class="proprty_icon"><img alt="" src="{% static 'website/images/garage_icon.png' %}"></div>
-                <h5>Garage 1</h5>
-              </li>
-            </ul>
-          </div>
-          <div class="rent_info">
-            <div class="apart">Apartment</div>
-            <div class="sale">For Sale</div>
-          </div>
-        </div>
-      </li>
-      <!--col-lg-4 End--> 
       
       <!--col-lg-4 Start-->
+      {% for appartment in appartments %}
       <li class="col-lg-4">
         <div class="property_box wow fadeInUp">
-          <div class="propertyImg"><img alt="" src="{% static 'website/images/propertyImg02.jpg' %}"></div>
-          <h3><a href="#">Apartment for sale quality</a></h3>
-          <div class="property_location"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Staten Island / Queens</div>
+          <div class="propertyImg">
+            {% if appartment.images %}
+            {% with appartment.images.all|first as first_image %}
+            {% if first_image %}
+                <img style="height: 300px;" class="propertyImg" src="{{ first_image.image.url }}" alt="Card image cap">
+            {% else %}
+                <img class="propertyImg" src="{% static 'website/images/propertyImg03.jpg' %}" alt="Default image cap">
+            {% endif %}
+            {% endwith %}
+
+              {% endif %}
+
+          </div>
+
+          <h3><a href="{% url 'appartment_details' appartment.id %}">{{ appartment.project_name }}</a></h3>
+
+          <div class="property_location"><i class="fas fa-map-marker-alt" aria-hidden="true"></i>{{ appartment.area }}</div>
           <div class="heart_info">
             <div class="heart_icon"><a href="#"><i class="fas fa-heart" aria-hidden="true"></i></a></div>
             <div class="heart_icon exchange_icon"><a href="#"><i class="fas fa-exchange-alt"></i></a></div>
-            <div class="property_price">$ 488.00</div>
+            <div class="property_price">₹ {{ appartment.total_price }}  </div>
           </div>
           <div class="propert_info">
             <ul class="row">
               <li class="col-4">
                 <div class="proprty_icon"><img alt="" src="{% static 'website/images/bedroom_icon.png' %}"></div>
-                <h5>Bedrooms 3</h5>
+                <h5>{{ appartment.bhk }}</h5>
               </li>
               <li class="col-4">
                 <div class="proprty_icon"><img alt="" src="{% static 'website/images/bathroom_icon.png' %}"></div>
-                <h5>Bathrooms 2</h5>
+                <h5>{{ appartment.bathrooms }}</h5>
               </li>
               <li class="col-4">
                 <div class="proprty_icon"><img alt="" src="{% static 'website/images/garage_icon.png' %}"></div>
-                <h5>Garage 1</h5>
+                <h5>{{ appartment.parking }}</h5>
               </li>
             </ul>
           </div>
@@ -203,44 +185,11 @@
           </div>
         </div>
       </li>
+      {% endfor %}
       <!--col-lg-4 End--> 
-      
-      <!--col-lg-4 Start-->
-      <li class="col-lg-4">
-        <div class="property_box wow fadeInUp">
-          <div class="propertyImg"><img alt="" src="{% static 'website/images/propertyImg03.jpg' %}"></div>
-          <h3><a href="#">Upper portion Apartment for sale</a></h3>
-          <div class="property_location"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Staten Island / Queens</div>
-          <div class="heart_info">
-            <div class="heart_icon"><a href="#"><i class="fas fa-heart" aria-hidden="true"></i></a></div>
-            <div class="heart_icon exchange_icon"><a href="#"><i class="fas fa-exchange-alt"></i></a></div>
-            <div class="property_price">$ 488.00</div>
-          </div>
-          <div class="propert_info">
-            <ul class="row">
-              <li class="col-4">
-                <div class="proprty_icon"><img alt="" src="{% static 'website/images/bedroom_icon.png' %}"></div>
-                <h5>Bedrooms 3</h5>
-              </li>
-              <li class="col-4">
-                <div class="proprty_icon"><img alt="" src="{% static 'website/images/bathroom_icon.png' %}"></div>
-                <h5>Bathrooms 2</h5>
-              </li>
-              <li class="col-4">
-                <div class="proprty_icon"><img alt="" src="{% static 'website/images/garage_icon.png' %}"></div>
-                <h5>Garage 1</h5>
-              </li>
-            </ul>
-          </div>
-          <div class="rent_info">
-            <div class="apart">Apartment</div>
-            <div class="sale">For Sale</div>
-          </div>
-        </div>
-      </li>
-      <!--col-lg-4 End-->
+    
     </ul>
-    <!--Row End--> 
+    <!--Row End-->
     
   </div>
 </div>
@@ -252,8 +201,8 @@
     <div class="title">
       <h1>Buy or sell your house</h1>
     </div>
-    <p>Donec placerat dolor id neque pretium placerat. Donec in facilisis risus. In sollicitudin magna luctus sem ultrices convallis. Sed quis ex vel tellus ullamcorper malesuada. Aenean facilisis ex dolor, id vehicula nisl consectetur dapibus. Phasellus mollis mauris semper placerat convallis. Morbi varius facilisis dignissim. Donec eu sollicitudin nunc. Aliquam in nisi id arcu gravida vehicula quis nec sapien. Fusce at dolor ex.</p>
-    <div class="start_btn"> <span><a href="#">Start Search Now</a></span> <span><a href="#">Browse Properties</a></span> </div>
+    <p>At Vintage Realtors and Promotors , we make your property-buying experience seamless and stress-free. Whether you're in the market for a residential plot, a luxurious villa, a modern apartment, or a commercial space, we offer a wide variety of options to match your needs, preferences, and budget. Here’s a glimpse of what we have to offer:.</p>
+    <div class="start_btn"> <span><a href="{% url 'villas_properties' %}">Luxury Villas</a></span> <span><a href="{% url 'plots_properties' %}">Residencial Plots</a></span> </div>
   </div>
 </div>
 <!--Buy and Sell Start--> 
@@ -265,31 +214,31 @@
     <span>Lorem ipsum dolor sit amet consectetur</span>
     <div class="row">
       <div class="col-md-8">
-        <div class="popular_img position-relative"> <img alt="" src="{% static 'website/images/california.jpg' %}">
-          <div class="popular_img_text"><a href="#">California</a></div>
+        <div class="popular_img position-relative"> <img alt="" src="{% static 'website/images/index/index11.jpg' %}">
+          <div class="popular_img_text"><a href="#">Chennai</a></div>
         </div>
       </div>
       <div class="col-md-4 mt_md">
-        <div class="popular_img position-relative"> <img alt="" src="{% static 'website/images/new_york.jpg' %}">
-          <div class="popular_img_text"><a href="#">New York</a></div>
+        <div class="popular_img position-relative"> <img alt="" src="{% static 'website/images/index/index12.jpg' %}">
+          <div class="popular_img_text"><a href="#">Anna Nagar</a></div>
         </div>
-        <div class="popular_img position-relative mt"> <img alt="" src="{% static 'website/images/miami.jpg' %}">
-          <div class="popular_img_text"><a href="#">Miami</a></div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="popular_img position-relative mt"> <img alt="" src="{% static 'website/images/san_francisco.jpg' %}">
-          <div class="popular_img_text"><a href="#">San Francisco</a></div>
+        <div class="popular_img position-relative mt"> <img alt="" src="{% static 'website/images/index/index2.jpg' %}">
+          <div class="popular_img_text"><a href="#">Beach</a></div>
         </div>
       </div>
       <div class="col-md-4">
-        <div class="popular_img position-relative mt"> <img alt="" src="{% static 'website/images/dubai.jpg' %}">
-          <div class="popular_img_text"><a href="#">Dubai</a></div>
+        <div class="popular_img position-relative mt"> <img alt="" src="{% static 'website/images/index/index3.jpg' %}">
+          <div class="popular_img_text"><a href="#">Medavakkam</a></div>
         </div>
       </div>
       <div class="col-md-4">
-        <div class="popular_img position-relative mt"> <img alt="" src="{% static 'website/images/australia.jpg' %}">
-          <div class="popular_img_text"><a href="#">Australia</a></div>
+        <div class="popular_img position-relative mt"> <img alt="" src="{% static 'website/images/index/index8.jpg' %}">
+          <div class="popular_img_text"><a href="#">Guduvancherry</a></div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="popular_img position-relative mt"> <img alt="" src="{% static 'website/images/index/index1.jpg' %}">
+          <div class="popular_img_text"><a href="#">Central</a></div>
         </div>
       </div>
     </div>
@@ -302,35 +251,47 @@
 <div class="property-wrap property_rent wow fadeInUp">
   <div class="container">
     <div class="title">
-      <h1>Properties For Rent <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span></h1>
+      <h1>Properties For Resale Apparment <span>"Looking for resale apartments....? Find quality homes at competitive prices, offering great value and prime locations. Your next apartment is just a click away!".</span></h1>
     </div>
     
     <!--Row Start-->
     <ul class="row">
-      <!--col-lg-4 Start-->
+      {% for appartment in resale_apartments %}
       <li class="col-lg-4">
         <div class="property_box wow fadeInUp">
-          <div class="propertyImg"><img alt="" src="{% static 'website/images/propertyImg01.jpg' %}"></div>
-          <h3><a href="#">Upper portion Apartment for sale</a></h3>
-          <div class="property_location"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Staten Island / Queens</div>
+          <div class="propertyImg">
+            {% if appartment.images %}
+              {% with appartment.images.all|first as first_image %}
+                {% if first_image %}
+                  <img style="height: 300px;" class="propertyImg" src="{{ first_image.image.url }}" alt="Card image cap">
+                {% else %}
+                  <img class="propertyImg" src="{% static 'website/images/propertyImg03.jpg' %}" alt="Default image cap">
+                {% endif %}
+              {% endwith %}
+            {% endif %}
+          </div>
+    
+          <h3><a href="{% url 'resale_appartment_details' appartment.id %}">{{ appartment.project_name }}</a></h3>
+    
+          <div class="property_location"><i class="fas fa-map-marker-alt" aria-hidden="true"></i>{{ appartment.area }}</div>
           <div class="heart_info">
             <div class="heart_icon"><a href="#"><i class="fas fa-heart" aria-hidden="true"></i></a></div>
             <div class="heart_icon exchange_icon"><a href="#"><i class="fas fa-exchange-alt"></i></a></div>
-            <div class="property_price">$ 488.00</div>
+            <div class="property_price">₹ {{ appartment.total_price }}  </div>
           </div>
           <div class="propert_info">
             <ul class="row">
               <li class="col-4">
                 <div class="proprty_icon"><img alt="" src="{% static 'website/images/bedroom_icon.png' %}"></div>
-                <h5>Bedrooms 3</h5>
+                <h5>{{ appartment.bhk }}</h5>
               </li>
               <li class="col-4">
                 <div class="proprty_icon"><img alt="" src="{% static 'website/images/bathroom_icon.png' %}"></div>
-                <h5>Bathrooms 2</h5>
+                <h5>{{ appartment.bathrooms }}</h5>
               </li>
               <li class="col-4">
                 <div class="proprty_icon"><img alt="" src="{% static 'website/images/garage_icon.png' %}"></div>
-                <h5>Garage 1</h5>
+                <h5>{{ appartment.parking }}</h5>
               </li>
             </ul>
           </div>
@@ -340,77 +301,7 @@
           </div>
         </div>
       </li>
-      <!--col-lg-4 End--> 
-      
-      <!--col-lg-4 Start-->
-      <li class="col-lg-4">
-        <div class="property_box wow fadeInUp">
-          <div class="propertyImg"><img alt="" src="{% static 'website/images/propertyImg02.jpg' %}"></div>
-          <h3><a href="#">Apartment for sale quality</a></h3>
-          <div class="property_location"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Staten Island / Queens</div>
-          <div class="heart_info">
-            <div class="heart_icon"><a href="#"><i class="fa fa-heart" aria-hidden="true"></i></a></div>
-            <div class="heart_icon exchange_icon"><a href="#"><i class="fas fa-exchange-alt"></i></a></div>
-            <div class="property_price">$ 488.00</div>
-          </div>
-          <div class="propert_info">
-            <ul class="row">
-              <li class="col-4">
-                <div class="proprty_icon"><img alt="" src="{% static 'website/images/bedroom_icon.png' %}"></div>
-                <h5>Bedrooms 3</h5>
-              </li>
-              <li class="col-4">
-                <div class="proprty_icon"><img alt="" src="{% static 'website/images/bathroom_icon.png' %}"></div>
-                <h5>Bathrooms 2</h5>
-              </li>
-              <li class="col-4">
-                <div class="proprty_icon"><img alt="" src="{% static 'website/images/garage_icon.png' %}"></div>
-                <h5>Garage 1</h5>
-              </li>
-            </ul>
-          </div>
-          <div class="rent_info">
-            <div class="apart">Apartment</div>
-            <div class="sale">For Sale</div>
-          </div>
-        </div>
-      </li>
-      <!--col-lg-4 End--> 
-      
-      <!--col-lg-4 Start-->
-      <li class="col-lg-4">
-        <div class="property_box  wow fadeInUp">
-          <div class="propertyImg"><img alt="" src="{% static 'website/images/propertyImg03.jpg' %}"></div>
-          <h3><a href="#">Upper portion Apartment for sale</a></h3>
-          <div class="property_location"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Staten Island / Queens</div>
-          <div class="heart_info">
-            <div class="heart_icon"><a href="#"><i class="fas fa-heart" aria-hidden="true"></i></a></div>
-            <div class="heart_icon exchange_icon"><a href="#"><i class="fas fa-exchange-alt"></i></a></div>
-            <div class="property_price">$ 488.00</div>
-          </div>
-          <div class="propert_info">
-            <ul class="row">
-              <li class="col-4">
-                <div class="proprty_icon"><img alt="" src="{% static 'website/images/bedroom_icon.png' %}"></div>
-                <h5>Bedrooms 3</h5>
-              </li>
-              <li class="col-4">
-                <div class="proprty_icon"><img alt="" src="{% static 'website/images/bathroom_icon.png' %}"></div>
-                <h5>Bathrooms 2</h5>
-              </li>
-              <li class="col-4">
-                <div class="proprty_icon"><img alt="" src="{% static 'website/images/garage_icon.png' %}"></div>
-                <h5>Garage 1</h5>
-              </li>
-            </ul>
-          </div>
-          <div class="rent_info">
-            <div class="apart">Apartment</div>
-            <div class="sale">For Sale</div>
-          </div>
-        </div>
-      </li>
-      <!--col-lg-4 End-->
+      {% endfor %}
     </ul>
     <!--Row End--> 
     
@@ -425,7 +316,7 @@
       <div class="col-lg-8">
         <div class="perfect_text">
           <h1>Want to find your perfect home?</h1>
-          <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ultricies, ex eu cursus viverra, lorem turpis feugiat augue, non viverra ipsum nunc in magna.</span> </div>
+          <span>"Explore your dream home with ease and confidence. From luxurious villas to affordable apartments, we make your property journey seamless and rewarding. Let us guide you every step of the way to find the perfect fit for your lifestyle."</span> </div>
       </div>
       <div class="col-lg-4">
         <div class="readmore"><a href="#">Browse Properties</a></div>
@@ -439,12 +330,12 @@
 <section class="our_team_wrap wow fadeInUp">
   <div class="container">
     <h1>Meet Our Agents</h1>
-    <span>Lorem ipsum dolor sit amet consectetur</span>
+    <span>"Meet our expert real estate agents, committed to helping you find your dream property with ease and confidence!"</span>
     <div class="row">
       <div class="col-lg-4">
         <div class="team_wrp">
           <div class="team_member  wow fadeInUp">
-            <div class="team_img"><img alt="" src="{% static 'website/images/team_1.png' %}"></div>
+            <div class="team_img"><img alt="" src="{% static 'website/images/profile/new_1.jpg' %}"></div>
             <div class="team_icons">
               <ul>
                 <li><a href="#"><i class="fab fa-facebook-f" aria-hidden="true"></i></a></li>
@@ -453,7 +344,7 @@
               </ul>
             </div>
             <div class="team_name">
-              <h3>David Strozier</h3>
+              <h3>Mr Er.Muthamiz</h3>
             </div>
           </div>
         </div>
@@ -461,7 +352,7 @@
       <div class="col-lg-4">
         <div class="team_wrp">
           <div class="team_member wow fadeInUp">
-            <div class="team_img"><img alt="" src="{% static 'website/images/team_2.png' %}"></div>
+            <div class="team_img"><img alt="" src="{% static 'website/images/profile/new_2.jpg' %}"></div>
             <div class="team_icons">
               <ul>
                 <li><a href="#"><i class="fab fa-facebook-f" aria-hidden="true"></i></a></li>
@@ -470,7 +361,7 @@
               </ul>
             </div>
             <div class="team_name">
-              <h3>James Adult</h3>
+              <h3>Mr Er.Muthamiz</h3>
             </div>
           </div>
         </div>
@@ -478,7 +369,7 @@
       <div class="col-lg-4">
         <div class="team_wrp">
           <div class="team_member wow fadeInUp">
-            <div class="team_img"><img alt="" src="{% static 'website/images/team_3.png' %}"></div>
+            <div class="team_img"><img alt="" src="{% static 'website/images/profile/new_3.jpg' %}"></div>
             <div class="team_icons">
               <ul>
                 <li><a href="#"><i class="fab fa-facebook-f" aria-hidden="true"></i></a></li>
@@ -487,7 +378,7 @@
               </ul>
             </div>
             <div class="team_name">
-              <h3>Jennie Wilson</h3>
+              <h3>Mr.MANNIKANDAN</h3>
             </div>
           </div>
         </div>

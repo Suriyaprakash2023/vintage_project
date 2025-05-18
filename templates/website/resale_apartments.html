@@ -14,15 +14,51 @@
 <div class="innercontent">
   <div class="container">
     <ul class="row blog_post">
-      {% for plot in plots %}
-        <li class="col-lg-4 col-md-6">
-          <div class="property_box wow fadeInUp">
-            <div class="propertyImg"><img alt="" src="{% static 'website/images/blog01.jpg' %}"></div>
-            <h3><a href="#">{{plot.title}}</a></h3>
-            <div class="post-meta"> <span>{{ plot.created_at}}</span>  </div>
-            <p>{{plot.description}}</p>
+      {% for appartment in resale_apartments %}
+      <li class="col-lg-4">
+        <div class="property_box wow fadeInUp">
+          <div class="propertyImg">
+            {% if appartment.images %}
+              {% with appartment.images.all|first as first_image %}
+                {% if first_image %}
+                  <img style="height: 300px;" class="propertyImg" src="{{ first_image.image.url }}" alt="Card image cap">
+                {% else %}
+                  <img class="propertyImg" src="{% static 'website/images/propertyImg03.jpg' %}" alt="Default image cap">
+                {% endif %}
+              {% endwith %}
+            {% endif %}
           </div>
-        </li>
+    
+          <h3><a href="{% url 'resale_appartment_details' appartment.id %}">{{ appartment.project_name }}</a></h3>
+    
+          <div class="property_location"><i class="fas fa-map-marker-alt" aria-hidden="true"></i>{{ appartment.area }}</div>
+          <div class="heart_info">
+            <div class="heart_icon"><a href="#"><i class="fas fa-heart" aria-hidden="true"></i></a></div>
+            <div class="heart_icon exchange_icon"><a href="#"><i class="fas fa-exchange-alt"></i></a></div>
+            <div class="property_price">₹ {{ appartment.total_price }}  </div>
+          </div>
+          <div class="propert_info">
+            <ul class="row">
+              <li class="col-4">
+                <div class="proprty_icon"><img alt="" src="{% static 'website/images/bedroom_icon.png' %}"></div>
+                <h5>{{ appartment.bhk }}</h5>
+              </li>
+              <li class="col-4">
+                <div class="proprty_icon"><img alt="" src="{% static 'website/images/bathroom_icon.png' %}"></div>
+                <h5>{{ appartment.bathrooms }}</h5>
+              </li>
+              <li class="col-4">
+                <div class="proprty_icon"><img alt="" src="{% static 'website/images/garage_icon.png' %}"></div>
+                <h5>{{ appartment.parking }}</h5>
+              </li>
+            </ul>
+          </div>
+          <div class="rent_info">
+            <div class="apart">Apartment</div>
+            <div class="sale">For Sale</div>
+          </div>
+        </div>
+      </li>
       {% endfor %}
     </ul>
     <div class="blog-pagination text-center"> <a href="#0"><i class="fas fa-angle-left"></i></a> <a href="#0">01</a> <a href="#0" class="active">02</a> <a href="#0">03</a> <a href="#0"><i class="fas fa-angle-right"></i></a> </div>

@@ -4,8 +4,9 @@
       <div class="footer-upper">
         <div class="row">
           <div class="col-lg-3 col-md-12">
-            <div class="footer-widget about-widget"> <a href="#"> <img alt="" src="{% static 'website/images/logo2.png' %}"> </a>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean urna magna, mattis at ullamcorper in, pharetra in lorem. Etiam mollis.</p>
+            <div class="footer-widget about-widget"> <a href="#"> <img alt="" src="{% static 'website/images/logo/urban_vista_logo_footer.png' %}"> </a>
+              <p>Insights into top residential areas: Adyar, Anna Nagar, T. Nagar, Velachery, OMR, ECR, and Porur.
+                Upcoming hotspots: GST Road, Poonamallee, or Thirumazhisai.</p>
               <div class="readmore"><a href="#">Read More </a></div>
             </div>
           </div>
@@ -13,11 +14,14 @@
             <div class="footer-widget quick-links">
               <h3 class="title">Quick links</h3>
               <ul>
-                <li><a href="#."> Home</a> </li>
-                <li><a href="#."> Properties</a> </li>
-                <li><a href="#."> Agents</a> </li>
-                <li><a href="#."> Blogs</a> </li>
-                <li><a href="#."> Contact Us</a> </li>
+                <li><a href="{% url 'home' %}"> Home</a> </li>
+                <li><a href="{% url 'plots_properties' %}"> Plots</a> </li>
+                <li><a href="{% url 'appartments_properties' %}"> Appartments</a> </li>
+                <li><a href="{% url 'individual_villa' %}"> Villas</a> </li>
+                <li><a href="{% url 'commercial_properties' %}"> Commercials</a> </li>
+                <li><a href="{% url 'gallery' %}"> Gallery</a> </li>
+                <li><a href="{% url 'contact' %}"> Contact Us</a> </li>
+                <li><a href="{% url 'about' %}"> About</a> </li>
               </ul>
             </div>
           </div>
@@ -25,13 +29,13 @@
             <div class="footer-widget contact">
               <h3 class="title">Recent Properties</h3>
               <ul class="property_sec">
-                <li>
+                 <!-- <li>
                   <div class="rec_proprty">
                     <div class="propertyImg"><img alt="" src="{% static 'website/images/property_small01.jpg' %}"></div>
                     <div class="property_info">
-                      <h4><a href="#">1324 Tennessee Road</a></h4>
-                      <p>Minneapolis, MN 55402</p>
-                      <div class="priceWrp">$98.00</div>
+                      <h4><a href="#">Plots</a></h4>
+                      <p>Chennai Location</p>
+                    <div class="priceWrp">$98.00</div>
                     </div>
                   </div>
                 </li>
@@ -39,22 +43,53 @@
                   <div class="rec_proprty">
                     <div class="propertyImg"><img alt="" src="{% static 'website/images/property_small02.jpg' %}"></div>
                     <div class="property_info">
-                      <h4><a href="#">1324 Tennessee Road</a></h4>
-                      <p>Minneapolis, MN 55402</p>
-                      <div class="priceWrp">$98.00</div>
+                      <h4><a href="#">Appartments</a></h4>
+                      <p>Metro City</p>
+                    <div class="priceWrp">$98.00</div> 
                     </div>
                   </div>
-                </li>
-              </ul>
+                </li>  -->
+
+ 
+                    {% for recent_villas in recent_villas %}
+                  <li>
+                    <div class="rec_proprty">
+                      <div class="propertyImg">
+                        {% if recent_villas.images.all %}
+                        <img src="{{ recent_villas.images.all.0.image.url }}" 
+                        alt="{{ recent_villas.title }}" 
+                        style="width: 120px; height: 100px; object-fit: cover; object-position: center; border: 2px solid #ddd; border-radius: 5px; padding: 2px;">
+                  
+                        {% else %}
+                          <img src="{% static 'website/images/property_placeholder.jpg' %}" 
+                              alt="Property image placeholder" 
+                              style="width: 120px; height: 100px; object-fit: cover; object-position: center;">
+                        {% endif %}
+                      </div>
+                      <div class="property_info">
+                        <h3>
+                          <a style="text-decoration: none;color: white;" href="{% url 'villa_details' recent_villas.id %}">
+                            {{ recent_villas.project_name }}
+                          </a>
+                        </h3>
+                      <!-- <p>{{ recent_villas.area }}</p>
+                        <div class="priceWrp">₹{{ recent_villas.total_price }}</div>  -->
+                      </div>
+                    </div>
+                  </li>
+                  {% empty %}
+                    <li>No properties available at the moment.</li>
+                  {% endfor %}
+              </ul>  
             </div>
           </div>
           <div class="col-lg-3 col-md-4">
             <div class="footer-widget contact">
               <h3 class="title">Contact Info</h3>
               <ul class="footer-adress">
-                <li class="footer_address"> <i class="fas fa-map-signs"></i> <span>123 Lorem Ipsum, 45 sit Atlanta</span> </li>
-                <li class="footer_email"> <i class="fas fa-envelope" aria-hidden="true"></i> <span><a href="mailto:info@realestate.com"> info@realestate.com </a></span> </li>
-                <li class="footer_phone"> <i class="fas fa-phone-alt"></i> <span><a href="tel:7704282433"> 770-123-4567</a></span> </li>
+                <li class="footer_address"> <i class="fas fa-map-signs"></i> <span> Urban Vista Builder & Developer </span> </li>
+                <li class="footer_email"> <i class="fas fa-envelope" aria-hidden="true"></i> <span style="margin: 10px;"><a href="mailto:info@realestate.com">urbanvistarealtorsandpromoters@gmaill.com  </a></span> </li>
+                <li class="footer_phone"> <i class="fas fa-phone-alt"></i> <span><a href="tel:7704282433"> +91-7871827192</a></span> </li>
               </ul>
               <div class="social-icons footer_icon">
                 <ul>
