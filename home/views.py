@@ -2,7 +2,9 @@ from django.shortcuts import render
 from . models import *
 from dashboard.models import *
 from django.shortcuts import render, get_object_or_404
+from django.views.decorators.csrf  import csrf_exempt
 
+@csrf_exempt
 def home(request):
     appartments = Appartment.objects.filter(appartment_type="Appartment", property_type="New").order_by('-created_at')[:3]
     plots = Plot.objects.filter(property_type="New")[:3]
@@ -23,7 +25,7 @@ def home(request):
     })
 
 
-
+@csrf_exempt
 def about(request):
     recent_villas = Appartment.objects.filter(
         appartment_type="Villa", 
@@ -31,6 +33,7 @@ def about(request):
     ).order_by('-created_at')[:5] 
     return render(request,'website/about.html',{"recent_villas":recent_villas})
 
+@csrf_exempt
 def error(request):
     return render(request,'website/404.html')
 
@@ -116,6 +119,7 @@ def individual_villa(request):
 def comercial_property(request):
     return render(request,'website/comercial_property.html')
 
+@csrf_exempt
 def plots_properties(request):
     plots = Plot.objects.filter(property_type="New")
     recent_villas = Appartment.objects.filter(
@@ -124,6 +128,7 @@ def plots_properties(request):
     ).order_by('-created_at')[:5] 
     return render(request,'website/plots.html',{"plots":plots,"recent_villas":recent_villas})
 
+@csrf_exempt
 def appartments_properties(request):
     recent_villas = Appartment.objects.filter(
         appartment_type="Villa", 
@@ -132,6 +137,7 @@ def appartments_properties(request):
     appartments = Appartment.objects.filter(appartment_type="Appartment",property_type="New").order_by('-created_at')
     return render(request,'website/appartments_properties.html',{"appartments":appartments,"recent_villas":recent_villas})
 
+@csrf_exempt
 def appartment_details(request, appartment_id):
     appartment = get_object_or_404(
         Appartment, 
@@ -157,6 +163,7 @@ def appartment_details(request, appartment_id):
     })
 
 
+@csrf_exempt
 def plot_details(request, plot_id):
     plot = get_object_or_404(Plot, pk=plot_id, property_type='New')
     recent_plots = Plot.objects.filter(property_type='New').exclude(id=plot_id).order_by('-created_at')[:5]
@@ -167,6 +174,7 @@ def plot_details(request, plot_id):
     plots = [plot]
     return render(request, 'website/property_single.html', {'plots': plots, 'recent_events': recent_plots,"recent_villas":recent_villas})
 
+@csrf_exempt
 def commercial_properties(request):
     commercials = Commercial.objects.filter(property_type="New")
     recent_villas = Appartment.objects.filter(
@@ -176,6 +184,7 @@ def commercial_properties(request):
     print(f"Fetched commercials: {commercials}")  
     return render(request, 'website/commercial_properties.html', {"commercials": commercials,"recent_villas":recent_villas})
 
+@csrf_exempt
 def commercial_details(request, commercial_id):
     commercial = get_object_or_404(Commercial, pk=commercial_id, property_type='New')
     recent_commercials = Commercial.objects.filter(property_type='New').exclude(id=commercial_id).order_by('-created_at')[:5]
@@ -189,6 +198,8 @@ def commercial_details(request, commercial_id):
         "recent_villas":recent_villas
     })
 
+
+@csrf_exempt
 def villas_properties(request):
     villas = Appartment.objects.filter(appartment_type="Villa", property_type="New").order_by('-created_at')
     recent_appartments = Appartment.objects.filter(
@@ -206,6 +217,8 @@ def villas_properties(request):
     })
 
 
+
+@csrf_exempt
 def villa_details(request, villa_id):
     villa = get_object_or_404(Appartment, pk=villa_id, appartment_type="Villa", property_type="New")
     recent_villas = Appartment.objects.filter(
@@ -218,6 +231,8 @@ def villa_details(request, villa_id):
     })
 
 
+
+@csrf_exempt
 def resale_plots(request):
     resale_plots = Plot.objects.filter(property_type="ReSale")
     recent_villas = Appartment.objects.filter(
@@ -226,6 +241,8 @@ def resale_plots(request):
     ).order_by('-created_at')[:5] 
     return render(request, 'website/resale_plots.html', {"resale_plots": resale_plots,"recent_villas":recent_villas})
 
+
+@csrf_exempt
 def resale_plot_details(request, plot_id):
     plot = get_object_or_404(Plot, pk=plot_id, property_type='ReSale')
     recent_plots = Plot.objects.filter(property_type='ReSale').exclude(id=plot_id).order_by('-created_at')[:5]
@@ -236,6 +253,8 @@ def resale_plot_details(request, plot_id):
     plots = [plot]
     return render(request, 'website/resale_plot_details.html', {'plots': plots, 'recent_plots': recent_plots,"recent_villas":recent_villas})
 
+
+@csrf_exempt
 def resale_comercial(request):
     resale_comercials = Commercial.objects.filter(property_type="ReSale")
     recent_villas = Appartment.objects.filter(
@@ -245,6 +264,8 @@ def resale_comercial(request):
     print(resale_comercials)
     return render(request,'website/resale_commercials.html',{"resale_comercials":resale_comercials,"recent_villas":recent_villas})
 
+
+@csrf_exempt
 def resale_commercial_details(request, commercial_id):
     commercial = get_object_or_404(Commercial, pk=commercial_id, property_type='ReSale')
     recent_commercials = Commercial.objects.filter(property_type='ReSale').exclude(id=commercial_id).order_by('-created_at')[:5]
@@ -258,6 +279,8 @@ def resale_commercial_details(request, commercial_id):
         "recent_villas":recent_villas
     })
 
+
+@csrf_exempt
 def resale_apartments(request):
     resale_apartments = Appartment.objects.filter(
         appartment_type="Appartment",
@@ -271,6 +294,7 @@ def resale_apartments(request):
     return render(request, 'website/resale_apartments.html', {"resale_apartments": resale_apartments,"recent_villas":recent_villas})
 
 
+@csrf_exempt
 def resale_appartment_details(request, appartment_id):
     appartment = get_object_or_404(Appartment, pk=appartment_id, property_type='ReSale')
     resale_recent_appartments = Appartment.objects.filter(
@@ -289,6 +313,7 @@ def resale_appartment_details(request, appartment_id):
         "recent_villas":recent_villas  
     })
 
+@csrf_exempt
 def resale_individual_villa(request):
     resale_villas = Appartment.objects.filter(appartment_type="Villa",property_type="ReSale").order_by('-created_at')
     recent_villas = Appartment.objects.filter(
@@ -297,6 +322,7 @@ def resale_individual_villa(request):
     ).order_by('-created_at')[:5] 
     return render(request,'website/resale_villas.html',{"resale_villas":resale_villas,"recent_villas":recent_villas})
 
+@csrf_exempt
 def resale_villa_details(request, villa_id):
     villa = get_object_or_404(Appartment, pk=villa_id, appartment_type="Villa", property_type="ReSale")
     recent_villas = Appartment.objects.filter(
@@ -310,6 +336,7 @@ def resale_villa_details(request, villa_id):
     })
 from django.shortcuts import render, redirect
 
+@csrf_exempt
 def contact(request):
     
     
@@ -335,6 +362,8 @@ def contact(request):
     contacts = Contact.objects.all()
     return render(request, 'website/contact.html', {'contacts': contacts,"recent_villas":recent_villas})
 
+
+@csrf_exempt
 def gallery(request):
     galleries = Gallery.objects.all() 
     recent_villas = Appartment.objects.filter(
@@ -343,6 +372,7 @@ def gallery(request):
     ).order_by('-created_at')[:5]  
     return render(request, 'website/gallery.html', {'galleries': galleries,"recent_villas":recent_villas})
 
+@csrf_exempt
 def construction(request):
     recent_villas = Appartment.objects.filter(
         appartment_type="Villa", 

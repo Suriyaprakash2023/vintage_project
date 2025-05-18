@@ -10,6 +10,7 @@ from dashboard.models import Staff_UserAuth
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.files.storage import default_storage
 
+@csrf_exempt
 def d_login(request):
     if request.method == 'POST':
         email = request.POST.get('email')
@@ -35,7 +36,7 @@ def d_login(request):
 
     return render(request, 'dashboard/d_login.html')
 
-
+@csrf_exempt
 @login_required(login_url='d_login')  
 def d_logout(request):
     """
@@ -44,7 +45,7 @@ def d_logout(request):
     logout(request)  
     messages.success(request, 'Successfully logged out!')  
     return redirect('home')  
-
+@csrf_exempt
 @login_required(login_url='d_login')  
 def index(request):
     return render(request,'dashboard/index.html')
@@ -113,11 +114,12 @@ def add_appartment(request):
         return redirect ('add_appartment')
     return render(request,'dashboard/add_appartment.html')
 
-
+@csrf_exempt
 def list_apartments(request):
     apartments = Appartment.objects.prefetch_related('images').all()
     return render(request, 'dashboard/table.html', {'apartments': apartments})
 
+@csrf_exempt
 def delete_apartment(request, apartment_id):
     apartment = get_object_or_404(Appartment, id=apartment_id)
     apartment.delete()
@@ -230,7 +232,7 @@ def add_commercial(request):
         return redirect ('add_commercial')
     return render(request,'dashboard/add_commercial.html')
 
-
+@csrf_exempt
 def appartments(request):
     if request.method == 'POST':
         property_type = request.POST.get('property_type', 'New')  
@@ -248,7 +250,7 @@ def appartments(request):
         'dashboard/appartments.html',
         {"appartments": appartments, "property_type": property_type}
     )
-
+@csrf_exempt
 def villas(request):
     if request.method == 'POST':
         property_type = request.POST.get('property_type', 'New')  
@@ -266,7 +268,7 @@ def villas(request):
         'dashboard/villas.html',
         {"villas": villas, "property_type": property_type}
     )
-
+@csrf_exempt
 def plots(request):
     plots = Plot.objects.all().order_by('-created_at')
     if request.method == 'POST':
@@ -274,7 +276,7 @@ def plots(request):
         plots = Plot.objects.filter(property_type=property_type).order_by('-created_at')
         return render(request,'dashboard/plots.html',{"plots":plots})
     return render(request,'dashboard/plots.html',{"plots":plots})
-
+@csrf_exempt
 def commercials(request):
     commercials = Commercial.objects.all().order_by('-created_at')
     if request.method == 'POST':
@@ -433,7 +435,7 @@ def d_contact(request):
     }
     return render(request, 'dashboard/d_contact.html', context)
 
-
+@csrf_exempt
 def d_gallery(request):
     if request.method == 'POST':
         customer_name = request.POST.get('customer_name')
@@ -458,7 +460,7 @@ def d_gallery(request):
     return render(request, 'dashboard/d_gallery.html', {'gallerys': gallerys,})
 
 
-
+@csrf_exempt
 def delete_gallery(request, gallery_id):
     gallery = get_object_or_404(Gallery, id=gallery_id)
     gallery.delete()
