@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-zl-so7lw%ol32(s#ae@&^5)76)ti85a50ybt64mw!kx*h**ukc
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*","urban-vista.onrender.com"]
 
 
 # Application definition
@@ -84,6 +84,18 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+
+ALLOWED_HOSTS = ["*",
+                 'https://8e28-14-195-129-246.ngrok-free.app',
+                #  "www.cncllp.in",
+                #  "https://cncllp.in/",
+                 ]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://8e28-14-195-129-246.ngrok-free.app',
+]
+
 
 
 # Password validation
@@ -150,5 +162,7 @@ TIME_ZONE = "Asia/Kolkata"
 USE_TZ = True
 
 AUTH_USER_MODEL = 'dashboard.Staff_UserAuth'
+
+AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 
 
