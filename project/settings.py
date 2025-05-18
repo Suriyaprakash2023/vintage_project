@@ -28,8 +28,12 @@ SECRET_KEY = 'django-insecure-zl-so7lw%ol32(s#ae@&^5)76)ti85a50ybt64mw!kx*h**ukc
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*","urban-vista.onrender.com"]
+ALLOWED_HOSTS = ["*","https://urban-vista.onrender.com/","https://urban-vista.onrender.com"]
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://urban-vista.onrender.com'
+    'https://urban-vista.onrender.com/'
+    ]
 
 # Application definition
 
